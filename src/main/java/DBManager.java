@@ -2,7 +2,7 @@ import java.sql.*;
 
 public class DBManager {
 
-    Config cfg = new Config();
+//    Config cfg = new Config();
 
     static String DB_URL = "jdbc:mysql://localhost:3306/";
     static String DB_NAME = "seddit";
@@ -40,7 +40,7 @@ public class DBManager {
 
     public boolean validateLogin(String username, String password) throws SQLException {
         Statement st = conn.createStatement();
-        String validateSQL = String.format("SELECT * FROM login WHERE USERNAME='%s' AND PASSWORD='%s';", username, password);
+        String validateSQL = String.format("SELECT * FROM users WHERE USERNAME='%s' AND PASSWORD='%s';", username, password);
 //        String validateSQL = "SELECT * FROM login WHERE USERNAME='a' AND PASSWORD='a';";
         ResultSet resultSet = st.executeQuery(validateSQL);
         return resultSet.next();

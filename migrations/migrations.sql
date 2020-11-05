@@ -1,8 +1,8 @@
 -- Create database
 
-DROP SCHEMA IF EXISTS test_seddit;
-CREATE SCHEMA test_seddit;
-USE test_seddit;
+DROP SCHEMA IF EXISTS seddit;
+CREATE SCHEMA seddit;
+USE seddit;
 
 
 -- Users
@@ -17,6 +17,11 @@ CREATE TABLE users
     email char(255)
 );
 
+INSERT INTO users (username, password, firstname, lastname, email)
+VALUES ('a', 'a', 'John', 'Smith', 'a@a.com');
+
+INSERT INTO users (username, password, firstname, lastname, email)
+VALUES ('b', 'b', 'Mark', 'Cuban', 'b@b.com');
 
 -- Posts
 
