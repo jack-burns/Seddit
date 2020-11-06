@@ -29,5 +29,13 @@
     <input type="submit" value="Logout" >
 </form>
 
+<!--testing post message -->
+<form action="Posting" method ="post">
+    <label for="title">Post Title:</label>
+    <input name = "title" type="text" id ="title">
+    <textarea name = "content" id = "content">Enter your content...</textarea>
+    <input type="submit" value="Post">
+</form>
+
 </body>
 </html>
