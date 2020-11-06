@@ -3,7 +3,6 @@ package dao;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class UserPost {
@@ -34,6 +33,8 @@ public class UserPost {
             this.modified_timestamp = new Date();
         }
     }
+
+
 
 
     public String getUsername() {

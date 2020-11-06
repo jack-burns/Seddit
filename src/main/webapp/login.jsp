@@ -12,6 +12,8 @@
 </head>
 <body>
 
+<h1>Login</h1>
+
 <%
     String userName = null;
     Cookie[] cookies = request.getCookies();
