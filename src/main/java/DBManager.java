@@ -56,26 +56,21 @@ public class DBManager {
     public boolean postMessage(String title, String content, int userID){
         try{
             Statement st = conn.createStatement();
-            //INSERT INTO table_name (column1, column2, column3, ...)
-            //VALUES (value1, value2, value3, ...);
-            //"SELECT * FROM users WHERE USERNAME='%s' AND PASSWORD='%s';", username, password
             String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES('%s','%s',%s,'%s',NULL);", title, content, userID, getDate());
-            System.out.println("insertion query: " + postMessage);
-            st.executeUpdate(postMessage);
+            st.executeUpdate(postMessage);// need to use executeUpdate for insertion and deletion
             return true;
         } catch (SQLException e){
             return false;
         }
     }
 
-    public int getUerID(String userName){//this is working properly
+    public int getUerID(String userName){
         try{
             Statement st = conn.createStatement();
             String idQuerying = String.format("SELECT id FROM users WHERE username = '%s';", userName);
             System.out.println(idQuerying);
             ResultSet resultSet = st.executeQuery(idQuerying);
-            resultSet.next();
-            //System.out.println("result is: " + resultSet.getInt(1));
+            resultSet.next(); //.next() because cursor starts before result row 1
             return  resultSet.getInt(1);
         } catch (SQLException e){
             return -1;

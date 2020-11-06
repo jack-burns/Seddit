@@ -10,12 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="856974bb-0217-4e2a-8bcc-1d76632b519e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Seddit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Seddit.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/home.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Seddit-beta/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/Seddit-beta/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Seddit-beta/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Seddit-beta/home.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/PostingServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/PostingServlet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,19 +85,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Tomcat 9.0.39" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.38" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
       <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
       <option name="UPDATING_POLICY" value="restart-server" />
@@ -187,6 +171,7 @@
       <workItem from="1604610881745" duration="51000" />
       <workItem from="1604610946128" duration="8708000" />
       <workItem from="1604626318549" duration="13973000" />
+      <workItem from="1604648809928" duration="1011000" />
     </task>
     <servers />
   </component>

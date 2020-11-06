@@ -12,15 +12,14 @@ import java.io.PrintWriter;
 public class PostingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("got to the method");
         DBManager db = new DBManager();
         db.getConnection();
 
-        //getting username from cookie, this is working
+        //getting username from cookie
         String username = "";
         Cookie[] cookies = req.getCookies();
         if(cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
+            for (int i = 0; i < cookies.length; i++) {//can probably clean up using stream
                 Cookie cookie = cookies[i];
                 if ((cookie.getName()).equals("user")) {
                     username = cookie.getValue();
@@ -34,6 +33,7 @@ public class PostingServlet extends HttpServlet {
 
         PrintWriter output = resp.getWriter();
         if(userID != -1){
+            //sending message to DB with title, content, posterID, and current system time
             String title = req.getParameter("title");
             String content = req.getParameter("content");
             if(db.postMessage(title, content, userID)){
