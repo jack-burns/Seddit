@@ -31,12 +31,31 @@ CREATE TABLE posts
     title char(255),
     content char(255),
     from_user_id int,
-    create_timestamp Date,
+    create_timestamp Date NOT NULL,
     modified_timestamp Date,
 
     FOREIGN KEY (from_user_id) REFERENCES users (id)
 );
 
+-- Dummy Posts for testing
+
+delimiter $$
+create procedure load_foo_test_data()
+begin
+
+    declare v_max int unsigned default 150;
+    declare v_counter int unsigned default 0;
+
+    while v_counter < v_max do
+            INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES ('Hello World!', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #Curabitur #aliquam', 1, CURDATE(), CURDATE());
+            set v_counter=v_counter+1;
+        end while;
+    commit;
+end $$
+
+delimiter ;
+
+call load_foo_test_data();
 
 -- Hastags linked to Posts
 
@@ -47,6 +66,14 @@ CREATE TABLE hashtags
     to_post_id int,
     FOREIGN KEY (to_post_id) REFERENCES posts (id)
 );
+
+-- Dummy hashtags
+
+INSERT INTO hashtags (tag, to_post_id)
+VALUES ('#Curabitur', 1);
+
+INSERT INTO hashtags (tag, to_post_id)
+VALUES ('#aliquam', 1);
 
 
 -- Uploads lined to Posts
@@ -62,6 +89,10 @@ CREATE TABLE uploads
     to_post_id int,
     FOREIGN KEY (to_post_id) REFERENCES posts (id)
 );
+
+
+
+
 
 
 

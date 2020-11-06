@@ -20,13 +20,14 @@
             if(cookie.getName().equals("user")) userName = cookie.getValue();
         }
     }
-    if(userName != null) response.sendRedirect("home.jsp");
+//    userName = (String) session.getAttribute("username");
+    if(userName != null) response.sendRedirect("login");
 %>
 
-<form method="post" action="Login">
+<form action="login" method="post">
     <input type="text" name="username">
     <input type="password" name="password">
-    <input type="submit">
+    <input type="submit" value="login">
 </form>
 
 </body>
