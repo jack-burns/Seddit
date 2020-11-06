@@ -11,7 +11,23 @@
     <title>Seddit</title>
 </head>
 <body>
-<h1>Welcome to Seddit</h1>
+
+<%
+    String userName = null;
+    Cookie[] cookies = request.getCookies();
+    if(cookies !=null){
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("user")) userName = cookie.getValue();
+        }
+    }
+    if(userName == null) response.sendRedirect("index.jsp");
+%>
+
+<h1>Hi <%=userName%>, Welcome to Seddit</h1>
+
+<form action="Logout" method="post">
+    <input type="submit" value="Logout" >
+</form>
 
 </body>
 </html>
