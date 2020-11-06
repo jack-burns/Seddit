@@ -31,9 +31,11 @@
     <input type="submit" value="logout" >
 </form>
 
-<form action="PostManager" method="post">
-    <input type="text" name="name" value="<%=userName%>" hidden/>
-    <input type="text" name="message"/>
+<form action="home" method="post">
+    <label for="title">Title:</label>
+    <input name="title" type="text" id="title">
+    <label for="content">Enter your content:</label>
+    <textarea name="content" id="content"></textarea>
     <input type="submit" name="postmessage" value="Post"/>
 </form>
 
@@ -41,12 +43,12 @@
 
 
 <!--testing post message -->
-<form action="Posting" method ="post">
-    <label for="title">Post Title:</label>
-    <input name = "title" type="text" id ="title">
-    <textarea name = "content" id = "content">Enter your content...</textarea>
-    <input type="submit" value="Post">
-</form>
+<%--<form action="Posting" method ="post">--%>
+<%--    <label for="title">Post Title:</label>--%>
+<%--    <input name = "title" type="text" id ="title">--%>
+<%--    <textarea name = "content" id = "content">Enter your content...</textarea>--%>
+<%--    <input type="submit" value="Post">--%>
+<%--</form>--%>
 
 </body>
 </html>

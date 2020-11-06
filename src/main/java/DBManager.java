@@ -60,14 +60,16 @@ public class DBManager {
         ArrayList<UserPost> userPostArrayList = new ArrayList<>();
         try{
             Statement st = conn.createStatement();
-            String getUserPostsSQL = "SELECT * FROM posts;";
+            String getUserPostsSQL = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id ORDER BY posts.id DESC;";
             ResultSet resultSet = st.executeQuery(getUserPostsSQL);
             if(viewCount!=-1) {
                 int i = 0;
                 while (resultSet.next() && i < viewCount) {
                     UserPost userPost = new UserPost(resultSet.getString("title"),
                             resultSet.getString("content"),
-                            String.valueOf(resultSet.getInt("from_user_id")),
+                            resultSet.getString("username"),
+//                            getUserName(resultSet.getInt("from_user_id")),
+//                            String.valueOf(resultSet.getInt("from_user_id")),
                             resultSet.getString("create_timestamp"),
                             resultSet.getString("modified_timestamp"));
 
@@ -82,7 +84,7 @@ public class DBManager {
                             resultSet.getString("create_timestamp"),
                             resultSet.getString("modified_timestamp"));
 
-                    userPostArrayList.add(userPost);
+                    userPostArrayList.add(0,userPost);
                 }
             }
 
@@ -91,10 +93,12 @@ public class DBManager {
         return userPostArrayList;
     }
 
-    public boolean postMessage(String title, String content, int userID){
+    public boolean postMessage(String title, String content, String username){
+        UserPost userPost = new UserPost(title, content, username);
         try{
             Statement st = conn.createStatement();
-            String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES('%s','%s',%s,'%s',NULL);", title, content, userID, getDate());
+            String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES ('%s','%s',%s,'%s','%s');",
+                    userPost.getTitle(), userPost.getContent(), getUserID(userPost.getUsername()), formatDate(userPost.getCreate_timestamp()), formatDate(userPost.getModified_timestamp()));
             st.executeUpdate(postMessage);// need to use executeUpdate for insertion and deletion
             return true;
         } catch (SQLException e){
@@ -102,24 +106,43 @@ public class DBManager {
         }
     }
 
+    public String formatDate(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(date);
+    }
+
     public int getUserID(String userName){
+        int userId = -1;
         try{
             Statement st = conn.createStatement();
             String idQuerying = String.format("SELECT id FROM users WHERE username = '%s';", userName);
             System.out.println(idQuerying);
             ResultSet resultSet = st.executeQuery(idQuerying);
             resultSet.next(); //.next() because cursor starts before result row 1
-            return  resultSet.getInt(1);
-        } catch (SQLException e){
-            return -1;
-        }
+            userId = resultSet.getInt("id");
+        } catch (SQLException e){}
+        return userId;
     }
 
-    public String getDate(){
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(date);
+
+    // not used, but ill leave it here for the moment
+    public String getUserName(int userId){
+        String username = "anonymous";
+        try {
+            Statement st = conn.createStatement();
+            String usernameSQL = String.format("SELECT * FROM users WHERE id= '%d';", userId);
+            System.out.println(usernameSQL);
+            ResultSet resultSet = st.executeQuery(usernameSQL);
+            resultSet.next(); //.next() because cursor starts before result row 1
+            username= resultSet.getString("username");
+        } catch (SQLException e){}
+
+        return username;
+
+
     }
+
+
 
 
 }
