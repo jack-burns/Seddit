@@ -12,6 +12,13 @@
 
 <body>
 
+<form action="home" method="get">
+    <input type="submit" name="viewposts" value="10">
+    <input type="submit" name="viewposts" value="25">
+    <input type="submit" name="viewposts" value="50">
+    <input type="submit" name="viewposts" value="all">
+</form>
+
 <%
     ArrayList userPosts = (ArrayList) request.getAttribute("UserPosts");
     if(userPosts != null){

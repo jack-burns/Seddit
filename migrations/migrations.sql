@@ -37,17 +37,25 @@ CREATE TABLE posts
     FOREIGN KEY (from_user_id) REFERENCES users (id)
 );
 
--- Dummy post
+-- Dummy Posts for testing
 
-INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp)
-VALUES (
-        'Hello World!',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #Curabitur #aliquam',
-        1,
-        CURDATE(),
-        CURDATE()
-        );
+delimiter $$
+create procedure load_foo_test_data()
+begin
 
+    declare v_max int unsigned default 150;
+    declare v_counter int unsigned default 0;
+
+    while v_counter < v_max do
+            INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES ('Hello World!', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #Curabitur #aliquam', 1, CURDATE(), CURDATE());
+            set v_counter=v_counter+1;
+        end while;
+    commit;
+end $$
+
+delimiter ;
+
+call load_foo_test_data();
 
 -- Hastags linked to Posts
 
@@ -81,6 +89,9 @@ CREATE TABLE uploads
     to_post_id int,
     FOREIGN KEY (to_post_id) REFERENCES posts (id)
 );
+
+
+
 
 
 

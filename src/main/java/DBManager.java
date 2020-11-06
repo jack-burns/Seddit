@@ -54,23 +54,37 @@ public class DBManager {
         }
     }
 
-    public ArrayList<UserPost> getUserPosts(){
+    public ArrayList<UserPost> getUserPosts(int viewCount){
         ArrayList<UserPost> userPostArrayList = new ArrayList<>();
         try{
             Statement st = conn.createStatement();
             String getUserPostsSQL = "SELECT * FROM posts;";
             ResultSet resultSet = st.executeQuery(getUserPostsSQL);
-            while(resultSet.next()){
-                UserPost userPost = new UserPost(resultSet.getString("title"),
-                        resultSet.getString("content"),
-                        String.valueOf(resultSet.getInt("from_user_id")),
-                        resultSet.getString("create_timestamp"),
-                        resultSet.getString("modified_timestamp"));
+            if(viewCount!=-1) {
+                int i = 0;
+                while (resultSet.next() && i < viewCount) {
+                    UserPost userPost = new UserPost(resultSet.getString("title"),
+                            resultSet.getString("content"),
+                            String.valueOf(resultSet.getInt("from_user_id")),
+                            resultSet.getString("create_timestamp"),
+                            resultSet.getString("modified_timestamp"));
 
-                userPostArrayList.add(userPost);
+                    userPostArrayList.add(userPost);
+                    i++;
+                }
+            } else {
+                while (resultSet.next()) {
+                    UserPost userPost = new UserPost(resultSet.getString("title"),
+                            resultSet.getString("content"),
+                            String.valueOf(resultSet.getInt("from_user_id")),
+                            resultSet.getString("create_timestamp"),
+                            resultSet.getString("modified_timestamp"));
+
+                    userPostArrayList.add(userPost);
+                }
             }
 
-        } catch (SQLException e){
+            } catch (SQLException e){
         }
         return userPostArrayList;
     }
