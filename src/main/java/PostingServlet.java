@@ -29,7 +29,7 @@ public class PostingServlet extends HttpServlet {
         }
 
         //getting userID from DB using username
-        int userID = db.getUerID(username);
+        int userID = db.getUserID(username);
 
         PrintWriter output = resp.getWriter();
         if(userID != -1){
