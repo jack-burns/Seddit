@@ -18,7 +18,7 @@ public class LoginServlet extends HttpServlet {
                 db.getConnection();
                 if(db.validateLogin(req.getParameter("username"), req.getParameter("password"))){
                     Cookie loginCookie = new Cookie("user", req.getParameter("username"));
-                    loginCookie.setMaxAge(5);
+                    loginCookie.setMaxAge(30*60);
                     resp.addCookie(loginCookie);
                     resp.sendRedirect("home.jsp");
                 } else {
