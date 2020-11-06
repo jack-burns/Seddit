@@ -1,4 +1,7 @@
+import dao.UserPost;
+
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBManager {
 
@@ -49,6 +52,27 @@ public class DBManager {
         } catch (SQLException e){
             return false;
         }
+    }
+
+    public ArrayList<UserPost> getUserPosts(){
+        ArrayList<UserPost> userPostArrayList = new ArrayList<>();
+        try{
+            Statement st = conn.createStatement();
+            String getUserPostsSQL = "SELECT * FROM posts;";
+            ResultSet resultSet = st.executeQuery(getUserPostsSQL);
+            while(resultSet.next()){
+                UserPost userPost = new UserPost(resultSet.getString("title"),
+                        resultSet.getString("content"),
+                        String.valueOf(resultSet.getInt("from_user_id")),
+                        resultSet.getString("create_timestamp"),
+                        resultSet.getString("modified_timestamp"));
+
+                userPostArrayList.add(userPost);
+            }
+
+        } catch (SQLException e){
+        }
+        return userPostArrayList;
     }
 
 

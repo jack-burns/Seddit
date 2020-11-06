@@ -31,11 +31,22 @@ CREATE TABLE posts
     title char(255),
     content char(255),
     from_user_id int,
-    create_timestamp Date,
+    create_timestamp Date NOT NULL,
     modified_timestamp Date,
 
     FOREIGN KEY (from_user_id) REFERENCES users (id)
 );
+
+-- Dummy post
+
+INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp)
+VALUES (
+        'Hello World!',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. #Curabitur #aliquam',
+        1,
+        CURDATE(),
+        CURDATE()
+        );
 
 
 -- Hastags linked to Posts
@@ -47,6 +58,14 @@ CREATE TABLE hashtags
     to_post_id int,
     FOREIGN KEY (to_post_id) REFERENCES posts (id)
 );
+
+-- Dummy hashtags
+
+INSERT INTO hashtags (tag, to_post_id)
+VALUES ('#Curabitur', 1);
+
+INSERT INTO hashtags (tag, to_post_id)
+VALUES ('#aliquam', 1);
 
 
 -- Uploads lined to Posts

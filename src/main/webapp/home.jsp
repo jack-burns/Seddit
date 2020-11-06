@@ -29,5 +29,17 @@
     <input type="submit" value="Logout" >
 </form>
 
+<form action="PostManager" method="post">
+    <input type="text" name="name" value="<%=userName%>" hidden/>
+    <input type="text" name="message"/>
+    <input type="submit" name="postmessage" value="Post"/>
+</form>
+
+<%@ include file="posts.jsp" %>
+
+
+
+</form>
+
 </body>
 </html>

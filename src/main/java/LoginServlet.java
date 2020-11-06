@@ -17,10 +17,16 @@ public class LoginServlet extends HttpServlet {
                 DBManager db = new DBManager();
                 db.getConnection();
                 if(db.validateLogin(req.getParameter("username"), req.getParameter("password"))){
+
+                    //Populate with UserPosts
+                    req.setAttribute("UserPosts", db.getUserPosts());
+
                     Cookie loginCookie = new Cookie("user", req.getParameter("username"));
                     loginCookie.setMaxAge(30*60);
                     resp.addCookie(loginCookie);
-                    resp.sendRedirect("home.jsp");
+//                    resp.sendRedirect("home.jsp");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                    rd.forward(req,resp);
                 } else {
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
                     PrintWriter out = resp.getWriter();
