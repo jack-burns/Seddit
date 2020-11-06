@@ -1,16 +1,11 @@
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/Login")
+@WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -18,19 +13,29 @@ public class LoginServlet extends HttpServlet {
                 db.getConnection();
                 if(db.validateLogin(req.getParameter("username"), req.getParameter("password"))){
 
-                    //Populate with UserPosts
-                    req.setAttribute("UserPosts", db.getUserPosts());
+//USER AUTH WITH SESSION
+//                    HttpSession session = req.getSession();
+//                    session.setAttribute("username", req.getParameter("username"));
+//                    req.setAttribute("username", req.getParameter("username"));
+//                    Populate with UserPosts
+//                    req.setAttribute("UserPosts", db.getUserPosts());
+//                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+//                    rd.forward(req,resp);
+
 
                     Cookie loginCookie = new Cookie("user", req.getParameter("username"));
                     loginCookie.setMaxAge(30*60);
+                    loginCookie.setPath("/");
                     resp.addCookie(loginCookie);
-//                    resp.sendRedirect("home.jsp");
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
-                    rd.forward(req,resp);
+                    resp.sendRedirect("home");
+
+
                 } else {
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
-                    PrintWriter out = resp.getWriter();
-                    out.println("<font color=red>Wrong username or password.</font>");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
+                    if(req.getParameter("username")!=null || req.getParameter("password")!=null) {
+                        PrintWriter out = resp.getWriter();
+                        out.println("<font color=red>Wrong username or password.</font>");
+                    }
                     rd.include(req, resp);
                 }
 

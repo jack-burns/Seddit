@@ -11,7 +11,6 @@
 <%@page import="java.util.Iterator"%>
 
 <body>
-<h1>POSTS JSP PAGE</h1>
 
 <%
     ArrayList userPosts = (ArrayList) request.getAttribute("UserPosts");
@@ -20,11 +19,14 @@
         for (Object post : userPosts) {
             UserPost userPost = (UserPost) post;
 %>
-            <p><%=userPost.getTitle()%><p><br/>
-            <p><%=userPost.getContent()%><p><br/>
-            <p><%=userPost.getUsername()%><p><br/>
-            <p><%=userPost.getCreate_timestamp()%><p><br/>
-            <p><%=userPost.getModified_timestamp()%><p><br/>
+<div style="border:1px solid orangered">
+
+            <h4>Title: <%=userPost.getTitle()%></h4>
+            <p>Message: <%=userPost.getContent()%><p>
+            <p>User ID: <%=userPost.getUsername()%><p>
+            <p>Date created: <%=userPost.getCreate_timestamp()%><p>
+            <p>Date modified: <%=userPost.getModified_timestamp()%><p>
+</div>
         <%
         }
     }
