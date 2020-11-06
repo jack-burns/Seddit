@@ -1,14 +1,13 @@
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 
 @WebServlet(name="PostManager", urlPatterns = "/home")
+@javax.servlet.annotation.MultipartConfig
 public class PostManagerServlet extends HttpServlet {
 
     @Override
@@ -29,23 +28,14 @@ public class PostManagerServlet extends HttpServlet {
             }
         }
 
-        //getting userID from DB using username
-        int userID = db.getUserID(username);
+        InputStream inputStream = null;
+        Part filePart = req.getPart("file");
 
-        PrintWriter out= resp.getWriter();
-        if(userID != -1){
-            //sending message to DB with title, content, posterID, and current system time
-            String title = req.getParameter("title");
-            String content = req.getParameter("content");
-            if(db.postMessage(title, content, username)){
-                out.println("<h1>Message posting successful!</h1>");
-            }
-        }
-        else {
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/home");
-            out.println("<h1>Something Went Wrong</h1>");
-            rd.include(req, resp);
-        }
+
+        //sending message to DB with title, content, posterID, and current system time
+        String title = req.getParameter("title");
+        String content = req.getParameter("content");
+        db.postMessage(title, content, username, filePart);
         resp.sendRedirect("home");
 
 

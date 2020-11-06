@@ -1,5 +1,10 @@
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import dao.UserPost;
 
+import javax.servlet.http.Part;
+import javax.swing.plaf.nimbus.State;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,17 +98,31 @@ public class DBManager {
         return userPostArrayList;
     }
 
-    public boolean postMessage(String title, String content, String username){
+    public void postMessage(String title, String content, String username, Part filePart){
         UserPost userPost = new UserPost(title, content, username);
         try{
             Statement st = conn.createStatement();
             String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES ('%s','%s',%s,'%s','%s');",
                     userPost.getTitle(), userPost.getContent(), getUserID(userPost.getUsername()), formatDate(userPost.getCreate_timestamp()), formatDate(userPost.getModified_timestamp()));
-            st.executeUpdate(postMessage);// need to use executeUpdate for insertion and deletion
-            return true;
-        } catch (SQLException e){
-            return false;
-        }
+            // need to use executeUpdate for insertion and deletion
+            st.executeUpdate(postMessage, Statement.RETURN_GENERATED_KEYS);
+            ResultSet generatedKeys = st.getGeneratedKeys();
+            if (generatedKeys.next()){
+                int post_id = generatedKeys.getInt(1);
+                postFile(filePart, post_id);
+            }
+        } catch (SQLException e){}
+    }
+
+    public void postFile(Part filePart, int post_id){
+        InputStream inputStream = null;
+        try {
+            inputStream = filePart.getInputStream();
+            Statement st = conn.createStatement();
+            String postFileSQL = String.format("INSERT INTO uploads (description, data, filename, filesize, filetype, to_post_id) VALUES ('%s', '%s', '%s', '%s', '%s', '%d');",
+                    filePart.getName(), inputStream, filePart.getName(), filePart.getSize(), filePart.getContentType(), post_id);
+            st.executeUpdate(postFileSQL);// need to use executeUpdate for insertion and deletion
+        } catch (IOException | SQLException e){}
     }
 
     public String formatDate(Date date){

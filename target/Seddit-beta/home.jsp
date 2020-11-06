@@ -31,11 +31,13 @@
     <input type="submit" value="logout" >
 </form>
 
-<form action="home" method="post">
+<form action="home" method="post" enctype="multipart/form-data">
     <label for="title">Title:</label>
     <input name="title" type="text" id="title">
     <label for="content">Enter your content:</label>
     <textarea name="content" id="content"></textarea>
+    <input type="file" name="file" size="50"/>
+
     <input type="submit" name="postmessage" value="Post"/>
 </form>
 
