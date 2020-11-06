@@ -16,34 +16,39 @@ public class DBManager {
 
     static Connection conn = null;
 
-    DBManager(){
+
+
+
+    public void getConnection() {
         try {
-            conn = getConnection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(DB_URL + DB_NAME, DB_USER, DB_PASSWORD);
+        } catch (ClassNotFoundException | SQLException e){
+            System.err.println(e);
         }
     }
 
-
-
-    public Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(DB_URL+DB_NAME, DB_USER, DB_PASSWORD);
-        return conn;
-    }
-
     public void closeConnection() throws SQLException {
-        if(conn!=null) conn.close();
+
+        if(conn!=null) {
+            try{
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println("Connection already closed");
+            }
+        }
     }
 
-    public boolean validateLogin(String username, String password) throws SQLException {
-        Statement st = conn.createStatement();
-        String validateSQL = String.format("SELECT * FROM users WHERE USERNAME='%s' AND PASSWORD='%s';", username, password);
+    public boolean validateLogin(String username, String password) {
+        try {
+            Statement st = conn.createStatement();
+            String validateSQL = String.format("SELECT * FROM users WHERE USERNAME='%s' AND PASSWORD='%s';", username, password);
 //        String validateSQL = "SELECT * FROM login WHERE USERNAME='a' AND PASSWORD='a';";
-        ResultSet resultSet = st.executeQuery(validateSQL);
-        return resultSet.next();
+            ResultSet resultSet = st.executeQuery(validateSQL);
+            return resultSet.next();
+        } catch (SQLException e){
+            return false;
+        }
     }
 
 
