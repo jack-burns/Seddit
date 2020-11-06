@@ -9,11 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="856974bb-0217-4e2a-8bcc-1d76632b519e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/PostingServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/PostingServlet.java" afterDir="false" />
-    </list>
+    <list default="true" id="856974bb-0217-4e2a-8bcc-1d76632b519e" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -172,6 +168,7 @@
       <workItem from="1604610946128" duration="8708000" />
       <workItem from="1604626318549" duration="13973000" />
       <workItem from="1604648809928" duration="1011000" />
+      <workItem from="1604649955013" duration="80000" />
     </task>
     <servers />
   </component>
