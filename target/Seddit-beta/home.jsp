@@ -1,4 +1,5 @@
-<%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="dao.UserPost" %><%--
   Created by IntelliJ IDEA.
   User: melon
   Date: 2020-11-05
@@ -20,14 +21,24 @@
             if(cookie.getName().equals("user")) userName = cookie.getValue();
         }
     }
-    if(userName == null) response.sendRedirect("index.jsp");
+//    userName = (String) session.getAttribute("username");
+    if(userName == null) response.sendRedirect("login");
 %>
 
 <h1>Hi <%=userName%>, Welcome to Seddit</h1>
 
-<form action="Logout" method="post">
-    <input type="submit" value="Logout" >
+<form action="logout" method="post">
+    <input type="submit" value="logout" >
 </form>
+
+<form action="PostManager" method="post">
+    <input type="text" name="name" value="<%=userName%>" hidden/>
+    <input type="text" name="message"/>
+    <input type="submit" name="postmessage" value="Post"/>
+</form>
+
+<%@ include file="posts.jsp" %>
+
 
 <!--testing post message -->
 <form action="Posting" method ="post">

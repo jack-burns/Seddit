@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "LogoutServlet", urlPatterns = "/Logout")
+@WebServlet(name = "LogoutServlet", urlPatterns = "/logout")
 public class LogoutServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,11 +27,11 @@ public class LogoutServlet extends HttpServlet {
             loginCookie.setMaxAge(0);
             resp.addCookie(loginCookie);
         }
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
         PrintWriter out = resp.getWriter();
         out.println("<font color=green>You have successfully logged out.</font>");
         rd.include(req, resp);
-//        resp.sendRedirect("index.jsp");
+//        resp.sendRedirect("login.jsp");
     }
 
 }
