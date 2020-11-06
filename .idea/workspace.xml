@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Seddit:war exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3153d61c-b6cb-442c-bade-d44fc4d5a58f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/PostingServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/PostingServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Seddit-beta/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/Seddit-beta/META-INF/MANIFEST.MF" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JupyterTrust" id="38ff78b2-c185-4d99-86c4-3fbd35af0699" />
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Tomcat 9.0.39" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.39" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="BROWSER_ID" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="Seddit:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Unnamed_Seddit_4" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="46603" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="Seddit:war exploded" />
+        </option>
+      </method>
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="738" y="964" width="1084" height="746" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604652852597">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state x="738" y="964" width="1084" height="746" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652852597" />
+    <state width="1739" height="299" key="GridCell.Tab.0.bottom" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.0.bottom/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.0.center" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.0.center/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.0.left" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.0.left/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.0.right" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.0.right/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.1.bottom" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.1.bottom/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.1.center" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.1.center/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.1.left" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.1.left/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.1.right" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.1.right/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.2.bottom" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.2.bottom/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.2.center" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.2.center/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.2.left" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.2.left/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+    <state width="1739" height="299" key="GridCell.Tab.2.right" timestamp="1604652777742">
+      <screen x="0" y="600" width="2560" height="1413" />
+    </state>
+    <state width="1739" height="299" key="GridCell.Tab.2.right/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604652777742" />
+  </component>
+</project>
