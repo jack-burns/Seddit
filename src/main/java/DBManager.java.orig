@@ -1,9 +1,12 @@
 import dao.UserPost;
 
 import java.sql.*;
+<<<<<<< HEAD
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+=======
+import java.util.ArrayList;
+>>>>>>> 0a26cba2e30fdeafd6d0ac48421296596e9683a4
 
 public class DBManager {
 
@@ -56,6 +59,18 @@ public class DBManager {
         }
     }
 
+<<<<<<< HEAD
+    public boolean postMessage(String title, String content, int userID){
+        try{
+            Statement st = conn.createStatement();
+            String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES('%s','%s',%s,'%s',NULL);", title, content, userID, getDate());
+            st.executeUpdate(postMessage);// need to use executeUpdate for insertion and deletion
+            return true;
+        } catch (SQLException e){
+            return false;
+        }
+    }
+=======
     public ArrayList<UserPost> getUserPosts(int viewCount){
         ArrayList<UserPost> userPostArrayList = new ArrayList<>();
         try{
@@ -91,18 +106,9 @@ public class DBManager {
         return userPostArrayList;
     }
 
-    public boolean postMessage(String title, String content, int userID){
-        try{
-            Statement st = conn.createStatement();
-            String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES('%s','%s',%s,'%s',NULL);", title, content, userID, getDate());
-            st.executeUpdate(postMessage);// need to use executeUpdate for insertion and deletion
-            return true;
-        } catch (SQLException e){
-            return false;
-        }
-    }
+>>>>>>> 0a26cba2e30fdeafd6d0ac48421296596e9683a4
 
-    public int getUserID(String userName){
+    public int getUerID(String userName){
         try{
             Statement st = conn.createStatement();
             String idQuerying = String.format("SELECT id FROM users WHERE username = '%s';", userName);
