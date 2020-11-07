@@ -46,8 +46,12 @@
             <%
                 }
             %>
+    <form action="download" method="get">
+    <p>File Attachment: <%=userPost.getFileAttachment().getName()%></p>
+    <button type="submit" name="download" value="<%=userPost.getFileAttachment().getId()%>">Download</button>
+    </form>
 </div>
-        <%
+<%
         }
     }
 %>
