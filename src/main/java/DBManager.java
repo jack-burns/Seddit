@@ -16,8 +16,8 @@ public class DBManager {
 
     static String DB_URL = "jdbc:mysql://localhost:3306/";
     static String DB_NAME = "seddit";
-    static String DB_USER = "admin";
-    static String DB_PASSWORD = "admin";
+    static String DB_USER = "root";
+    static String DB_PASSWORD = "Superzizi1!";
 
 //    String DB_URL = cfg.getProperty("DB_URL");
 //    String DB_NAME = cfg.getProperty("DB_NAME");

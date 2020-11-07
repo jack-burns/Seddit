@@ -33,6 +33,23 @@
             <p>User ID: <%=userPost.getUsername()%><p>
             <p>Date created: <%=userPost.getCreate_timestamp()%><p>
             <p>Date modified: <%=userPost.getModified_timestamp()%><p>
+            <%
+                if(userName.equals(userPost.getUsername())){
+            %>
+                <form action="modify" method="GET">
+                    <!--there must be a better way to do this, maybe handling it in the frontend?-->
+                    <input type = "hidden" name = "userName" value = '<%= userPost.getUsername()%>'>
+                    <input type= "hidden" name = "dateCreated" value = '<%= userPost.getCreate_timestamp()%>'>
+                    <input type = "submit" name = "modifyPost" value = "Modify">
+                </form>
+                <form action="delete" method="get">
+                    <input type = "hidden" name = "userID" value = '<%= userPost.getUsername()%>'>
+                    <input type= "hidden" name = "dateCreated" value = '<%= userPost.getCreate_timestamp()%>'>
+                    <input type = "submit" name = "deletePost" value = "Delete">
+                </form>
+            <%
+                }
+            %>
 </div>
         <%
         }
