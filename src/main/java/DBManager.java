@@ -76,7 +76,8 @@ public class DBManager {
 //                            getUserName(resultSet.getInt("from_user_id")),
 //                            String.valueOf(resultSet.getInt("from_user_id")),
                             resultSet.getString("create_timestamp"),
-                            resultSet.getString("modified_timestamp"));
+                            resultSet.getString("modified_timestamp"),
+                            resultSet.getInt("id"));
 
                     userPostArrayList.add(userPost);
                     i++;
@@ -87,7 +88,8 @@ public class DBManager {
                             resultSet.getString("content"),
                             String.valueOf(resultSet.getInt("from_user_id")),
                             resultSet.getString("create_timestamp"),
-                            resultSet.getString("modified_timestamp"));
+                            resultSet.getString("modified_timestamp"),
+                            resultSet.getInt("id"));
 
                     userPostArrayList.add(0,userPost);
                 }
@@ -135,7 +137,7 @@ public class DBManager {
         try{
             Statement st = conn.createStatement();
             String idQuerying = String.format("SELECT id FROM users WHERE username = '%s';", userName);
-            System.out.println(idQuerying);
+            //System.out.println(idQuerying);
             ResultSet resultSet = st.executeQuery(idQuerying);
             resultSet.next(); //.next() because cursor starts before result row 1
             userId = resultSet.getInt("id");
@@ -160,6 +162,39 @@ public class DBManager {
 
 
     }
+
+    public boolean modifyPost(int postID, String title, String content){
+        try
+        {
+            PreparedStatement statement = conn.prepareStatement("UPDATE posts SET title = ?, content = ?, modified_timestamp =? WHERE id =?"); //there might be a more efficient way to query this
+            statement.setString(1, title);
+            statement.setString(2, content);
+            statement.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            statement.setInt(4, postID);
+            statement.executeUpdate();
+            return true;
+
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deletePost(int postID){
+        try
+        {
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM posts WHERE id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 
 

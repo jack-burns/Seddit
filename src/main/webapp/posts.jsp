@@ -37,15 +37,11 @@
                 if(userName.equals(userPost.getUsername())){
             %>
                 <form action="modify" method="GET">
-                    <!--there must be a better way to do this, maybe handling it in the frontend?-->
-                    <input type = "hidden" name = "userName" value = '<%= userPost.getUsername()%>'>
-                    <input type= "hidden" name = "dateCreated" value = '<%= userPost.getCreate_timestamp()%>'>
+                    <%--there must be a better way to do this, maybe handling it in the frontend? also a JSP declaration with content reference to userPost doesn't work here for some reason--%>
+                    <input type = "hidden" name = "postID" value = '<%= userPost.getPostID()%>'>
+                    <input type="hidden" name = "oldTitle" value="<%=userPost.getTitle()%>">
+                    <input type="hidden" name= "oldContent" value="<%= userPost.getContent()%>">
                     <input type = "submit" name = "modifyPost" value = "Modify">
-                </form>
-                <form action="delete" method="get">
-                    <input type = "hidden" name = "userID" value = '<%= userPost.getUsername()%>'>
-                    <input type= "hidden" name = "dateCreated" value = '<%= userPost.getCreate_timestamp()%>'>
-                    <input type = "submit" name = "deletePost" value = "Delete">
                 </form>
             <%
                 }
