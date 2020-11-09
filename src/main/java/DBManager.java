@@ -209,7 +209,8 @@ public class DBManager {
                 for(String tag : tags){
                     hashtagSQL = hashtagSQL + String.format("('%s',%d), ", tag, post_id);
                 }
-                hashtagSQL = hashtagSQL + ";";
+                hashtagSQL = hashtagSQL.substring(0, hashtagSQL.length()-2) + ";";
+                System.out.println(hashtagSQL);
                 st.executeUpdate(hashtagSQL);
             } catch (SQLException e){
                 e.printStackTrace();
