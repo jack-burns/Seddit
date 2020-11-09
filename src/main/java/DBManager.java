@@ -115,7 +115,7 @@ public class DBManager {
             if (generatedKeys.next()){
                 int post_id = generatedKeys.getInt(1);
                 postFile(filePart, post_id);
-                insertHashtags(content, post_id);
+                insertHashtags(content, post_id);//added for hashtag parsing
             }
         } catch (SQLException e){}
     }
@@ -209,8 +209,7 @@ public class DBManager {
                 for(String tag : tags){
                     hashtagSQL = hashtagSQL + String.format("('%s',%d), ", tag, post_id);
                 }
-                hashtagSQL = hashtagSQL.substring(0, hashtagSQL.length()-2) + ";";
-                System.out.println(hashtagSQL);
+                hashtagSQL = hashtagSQL.substring(0, hashtagSQL.length()-2) + ";";//this is a hacky way of doing it, have to get rid of the last ", " in sql string there is probably a better way
                 st.executeUpdate(hashtagSQL);
             } catch (SQLException e){
                 e.printStackTrace();
@@ -219,7 +218,7 @@ public class DBManager {
     }
 
     private List<String> contentHashtagParsing(String content){
-        Pattern pattern = Pattern.compile("#\\w+");
+        Pattern pattern = Pattern.compile("#\\w+");//somehow underscore is readily recognized as alphanumerical
         List<String>  allMatches = new ArrayList<String>();
         Matcher hashtagMatcher = pattern.matcher(content);
         while(hashtagMatcher.find()){
