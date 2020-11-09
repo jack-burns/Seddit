@@ -12,6 +12,7 @@ public class UserPost {
     String content;
     Date create_timestamp;
     Date modified_timestamp;
+    int postID;//added to facilitate post modification and deletion
 
     public UserPost(String title, String content, String username){
         this.username = username;
@@ -21,7 +22,7 @@ public class UserPost {
         this.modified_timestamp = new Date();
     }
 
-    public UserPost(String title, String content, String username, String create_timestamp, String modified_timestamp) {
+    public UserPost(String title, String content, String username, String create_timestamp, String modified_timestamp, int postID) {
         this.username = username;
         this.title = title;
         this.content = content;
@@ -32,6 +33,7 @@ public class UserPost {
             this.create_timestamp = new Date();
             this.modified_timestamp = new Date();
         }
+        this.postID = postID;
     }
 
 
@@ -56,4 +58,6 @@ public class UserPost {
     public Date getModified_timestamp() {
         return modified_timestamp;
     }
+
+    public int getPostID(){return postID;};
 }
