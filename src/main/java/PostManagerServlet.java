@@ -65,14 +65,4 @@ public class PostManagerServlet extends HttpServlet {
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
         rd.forward(req,resp);
     }
-
-    private List<String> contentHashtagParsing(String content){
-        Pattern pattern = Pattern.compile("#\\w+");
-        List<String>  allMatches = new ArrayList<String>();
-        Matcher hashtagMatcher = pattern.matcher(content);
-        while(hashtagMatcher.find()){
-            allMatches.add(hashtagMatcher.group());
-        }
-        return allMatches;
-    }
 }
