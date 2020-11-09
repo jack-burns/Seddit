@@ -9,6 +9,9 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DBManager {
 
@@ -110,6 +113,7 @@ public class DBManager {
             if (generatedKeys.next()){
                 int post_id = generatedKeys.getInt(1);
                 postFile(filePart, post_id);
+                insertHashtags(content, post_id);
             }
         } catch (SQLException e){}
     }
@@ -161,7 +165,32 @@ public class DBManager {
 
     }
 
+    public void insertHashtags(String content, int post_id){
+        List<String> tags = contentHashtagParsing(content);
+        if(tags.size() != 0){
+            try {
+                Statement st = conn.createStatement();
+                String hashtagSQL = "INSERT INTO hashtags (tag, to_post_id) VALUES ";
+                for(String tag : tags){
+                    hashtagSQL = hashtagSQL + String.format("('%s',%d), ", tag, post_id);
+                }
+                hashtagSQL = hashtagSQL + ";";
+                st.executeUpdate(hashtagSQL);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
 
+    private List<String> contentHashtagParsing(String content){
+        Pattern pattern = Pattern.compile("#\\w+");
+        List<String>  allMatches = new ArrayList<String>();
+        Matcher hashtagMatcher = pattern.matcher(content);
+        while(hashtagMatcher.find()){
+            allMatches.add(hashtagMatcher.group());
+        }
+        return allMatches;
+    }
 
 
 }

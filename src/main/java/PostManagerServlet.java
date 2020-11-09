@@ -5,6 +5,10 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(name="PostManager", urlPatterns = "/home")
 @javax.servlet.annotation.MultipartConfig
@@ -60,5 +64,15 @@ public class PostManagerServlet extends HttpServlet {
         req.setAttribute("UserPosts", db.getUserPosts(viewCount));
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
         rd.forward(req,resp);
+    }
+
+    private List<String> contentHashtagParsing(String content){
+        Pattern pattern = Pattern.compile("#\\w+");
+        List<String>  allMatches = new ArrayList<String>();
+        Matcher hashtagMatcher = pattern.matcher(content);
+        while(hashtagMatcher.find()){
+            allMatches.add(hashtagMatcher.group());
+        }
+        return allMatches;
     }
 }
