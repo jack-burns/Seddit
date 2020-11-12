@@ -23,4 +23,11 @@
 hs_err_pid*
 
 # IDE
-.idea*
+.idea/
+.idea/*
+.settings/
+.settings/*
+.classpath
+.project
+
+

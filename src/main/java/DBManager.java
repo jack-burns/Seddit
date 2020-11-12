@@ -152,7 +152,8 @@ public class DBManager {
                         resultSet.getString("username"),
                         resultSet.getString("create_timestamp"),
                         resultSet.getString("modified_timestamp"),
-                        file);
+                        file,
+                        resultSet.getInt("posts.id"));
 
                 userPostArrayList.add(userPost);
                 i++;

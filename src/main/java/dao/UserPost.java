@@ -25,9 +25,9 @@ public class UserPost {
     }
 
 
-    //public UserPost(int userId, String title, String content, String username, String create_timestamp, String modified_timestamp, FileAttachment fileAttachment) { <- add file attachmnent
+    public UserPost(int userId, String title, String content, String username, String create_timestamp, String modified_timestamp, FileAttachment fileAttachment, int postID) {
 
-    public UserPost(String title, String content, String username, String create_timestamp, String modified_timestamp, int postID) {
+//    public UserPost(String title, String content, String username, String create_timestamp, String modified_timestamp, int postID) {
                 this.userId = userId;
         this.username = username;
         this.title = title;
