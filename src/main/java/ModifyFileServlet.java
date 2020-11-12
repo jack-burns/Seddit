@@ -2,38 +2,39 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name="ModifyPost", urlPatterns = "/modifyPost")
-public class ModifyPostServlet extends ModifyServlet{
+@WebServlet(name="ModifyFile", urlPatterns = "/modifyFile")
+@javax.servlet.annotation.MultipartConfig
+public class ModifyFileServlet extends ModifyServlet{
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         DBManager db = new DBManager();
-        int postID = (Integer) req.getSession().getAttribute("postID");
+        int fileID = (Integer) req.getSession().getAttribute("fileID");
 
-        if(req.getParameter("modifyPost")!=null) {
 
-            String newContent = req.getParameter("content");
-            String newTitle = req.getParameter("title");
 
-            if(!db.modifyPost(postID, newTitle, newContent)){
+        Part filePart = req.getPart("file");
+        if(filePart!=null){
+            if(!db.modifyFile(filePart, fileID)){
                 PrintWriter writer = resp.getWriter();
                 writer.write("<H1>Update failed!</H1>");
                 writer.flush();
             }
         }
 
-        if(req.getParameter("deletePost")!=null){
-            if(!db.deletePost(postID)){
+        if(req.getParameter("deleteFile")!=null){
+            if(!db.deleteFile(fileID)){
                 PrintWriter writer = resp.getWriter();
                 writer.write("<H1>Deletion failed!</H1>");
                 writer.flush();
             }
-        }
 
+        }
         resp.sendRedirect("home");
     }
 

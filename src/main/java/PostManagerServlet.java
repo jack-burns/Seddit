@@ -32,7 +32,6 @@ public class PostManagerServlet extends HttpServlet {
             }
         }
 
-        InputStream inputStream = null;
         Part filePart = req.getPart("file");
 
 

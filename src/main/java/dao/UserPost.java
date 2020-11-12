@@ -7,12 +7,17 @@ import java.util.Date;
 
 public class UserPost {
 
+    int userId;
     String username;
     String title;
     String content;
     Date create_timestamp;
     Date modified_timestamp;
+    FileAttachment fileAttachment;
     int postID;//added to facilitate post modification and deletion
+
+    public UserPost(){}
+
 
     public UserPost(String title, String content, String username){
         this.username = username;
@@ -22,7 +27,11 @@ public class UserPost {
         this.modified_timestamp = new Date();
     }
 
-    public UserPost(String title, String content, String username, String create_timestamp, String modified_timestamp, int postID) {
+
+    public UserPost(int userId, String title, String content, String username, String create_timestamp, String modified_timestamp, FileAttachment fileAttachment, int postID) {
+
+//    public UserPost(String title, String content, String username, String create_timestamp, String modified_timestamp, int postID) {
+                this.userId = userId;
         this.username = username;
         this.title = title;
         this.content = content;
@@ -34,10 +43,8 @@ public class UserPost {
             this.modified_timestamp = new Date();
         }
         this.postID = postID;
+        this.fileAttachment = fileAttachment;
     }
-
-
-
 
     public String getUsername() {
         return username;
@@ -57,6 +64,10 @@ public class UserPost {
 
     public Date getModified_timestamp() {
         return modified_timestamp;
+    }
+
+    public FileAttachment getFileAttachment() {
+        return fileAttachment;
     }
 
     public int getPostID(){return postID;};

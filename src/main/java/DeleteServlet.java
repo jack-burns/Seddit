@@ -19,13 +19,5 @@ public class DeleteServlet extends HttpServlet {
         int postID = Integer.parseInt(req.getParameter("postID"));
 
         DBManager db = new DBManager();
-        if(db.deletePost(postID)){
-            resp.sendRedirect("home");
-        }
-        else{
-            PrintWriter writer = resp.getWriter();
-            writer.write("<H1>Deletion failed!</H1>");
-            writer.flush();
-        }
     }
 }
