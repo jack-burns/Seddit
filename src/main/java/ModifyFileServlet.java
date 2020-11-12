@@ -16,14 +16,26 @@ public class ModifyFileServlet extends ModifyServlet{
         DBManager db = new DBManager();
         int fileID = (Integer) req.getSession().getAttribute("fileID");
 
-
-
         Part filePart = req.getPart("file");
+
+
+
         if(filePart!=null){
-            if(!db.modifyFile(filePart, fileID)){
-                PrintWriter writer = resp.getWriter();
-                writer.write("<H1>Update failed!</H1>");
-                writer.flush();
+            if(fileID!=0){
+
+                if(!db.modifyFile(filePart, fileID)){
+                    PrintWriter writer = resp.getWriter();
+                    writer.write("<H1>Update failed!</H1>");
+                    writer.flush();
+                }
+            }else{
+
+                if(!db.postFile(filePart, (Integer) req.getSession().getAttribute("postID"))){
+                    PrintWriter writer = resp.getWriter();
+                    writer.write("<H1>Update failed!</H1>");
+                    writer.flush();
+                }
+
             }
         }
 
