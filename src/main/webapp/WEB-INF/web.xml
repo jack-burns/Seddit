@@ -6,12 +6,12 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
-    <servlet>
-        <servlet-name>modifyPost</servlet-name>
-        <jsp-file>/modify_comment.jsp</jsp-file>
-    </servlet>
+<!--    <servlet>-->
+<!--        <servlet-name>ModificationManager</servlet-name>-->
+<!--        <jsp-file>/modify.jsp</jsp-file>-->
+<!--    </servlet>-->
     <servlet-mapping>
-        <servlet-name>modifyPost</servlet-name>
-        <url-pattern>/modifyPost</url-pattern>
+        <servlet-name>ModifyServlet</servlet-name>
+        <url-pattern>/modify</url-pattern>
     </servlet-mapping>
 </web-app>

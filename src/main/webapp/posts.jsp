@@ -43,9 +43,10 @@
                 <form action="modify" method="GET">
                     <%--there must be a better way to do this, maybe handling it in the frontend? also a JSP declaration with content reference to userPost doesn't work here for some reason--%>
                     <input type = "hidden" name = "postID" value = '<%= userPost.getPostID()%>'>
-                    <input type="hidden" name = "oldTitle" value="<%=userPost.getTitle()%>">
-                    <input type="hidden" name= "oldContent" value="<%= userPost.getContent()%>">
-                    <input type = "submit" name = "modifyPost" value = "Modify">
+<%--                    <input type="hidden" name = "oldTitle" value="<%=userPost.getTitle()%>">--%>
+<%--                    <input type="hidden" name= "oldContent" value="<%= userPost.getContent()%>">--%>
+<%--                    <input type="hidden" name= "fileAttachmentID" value="<%= userPost.getFileAttachment().getId()%>">--%>
+                    <input type="submit" value="Modify">
                 </form>
             <%
                 }

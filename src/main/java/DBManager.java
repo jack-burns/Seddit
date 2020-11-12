@@ -133,7 +133,7 @@ public class DBManager {
         try {
             Statement st = conn.createStatement();
 //            String getUserPostsSQL = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id ORDER BY posts.id DESC;";
-            String getUserPostsWithAttachmentSQL = "SELECT * FROM posts RIGHT OUTER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id;";
+            String getUserPostsWithAttachmentSQL = "SELECT * FROM posts RIGHT OUTER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id ORDER BY posts.id DESC;";
             ResultSet resultSet = st.executeQuery(getUserPostsWithAttachmentSQL);
             int i = 0;
             while (resultSet.next()) {
@@ -163,6 +163,34 @@ public class DBManager {
         return userPostArrayList;
     }
 
+    public UserPost getUserPost(int postId){
+        UserPost userPost = new UserPost();
+        try{
+            Statement st = conn.createStatement();
+            String getUserPostsWithAttachmentSQL = "SELECT * FROM posts RIGHT OUTER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id WHERE posts.id="+postId+" ORDER BY posts.id DESC;";
+            ResultSet resultSet = st.executeQuery(getUserPostsWithAttachmentSQL);
+            resultSet.next();
+            FileAttachment file = new FileAttachment(resultSet.getInt("uploads.id"),
+                    resultSet.getString("filename"),
+                    resultSet.getString("description"),
+                    resultSet.getString("filesize"),
+                    resultSet.getString("filetype"),
+                    resultSet.getBlob("data"));
+            userPost = new UserPost(resultSet.getInt("users.id"),
+                    resultSet.getString("title"),
+                    resultSet.getString("content"),
+                    resultSet.getString("username"),
+                    resultSet.getString("create_timestamp"),
+                    resultSet.getString("modified_timestamp"),
+                    file,
+                    resultSet.getInt("posts.id"));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return userPost;
+    }
     public void postMessage(String title, String content, String username, Part filePart) {
         UserPost userPost = new UserPost(title, content, username);
         try {

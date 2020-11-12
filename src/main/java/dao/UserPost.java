@@ -16,6 +16,9 @@ public class UserPost {
     FileAttachment fileAttachment;
     int postID;//added to facilitate post modification and deletion
 
+    public UserPost(){}
+
+
     public UserPost(String title, String content, String username){
         this.username = username;
         this.title = title;
