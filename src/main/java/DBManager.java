@@ -1,13 +1,22 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+//import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import com.google.common.base.Converter;
+import com.google.common.hash.Hashing;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import dao.UserPost;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.servlet.http.Part;
-import javax.swing.plaf.nimbus.State;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
 
 public class DBManager {
@@ -16,8 +25,8 @@ public class DBManager {
 
     static String DB_URL = "jdbc:mysql://localhost:3306/";
     static String DB_NAME = "seddit";
-    static String DB_USER = "admin";
-    static String DB_PASSWORD = "admin";
+    static String DB_USER = "root";
+    static String DB_PASSWORD = "root";
 
 //    String DB_URL = cfg.getProperty("DB_URL");
 //    String DB_NAME = cfg.getProperty("DB_NAME");
@@ -49,8 +58,13 @@ public class DBManager {
         }
     }
 
+    private String hashPassword(String password) {
+        return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+    }
+
+
     public boolean validateLogin(String username, String password) {
-        try {
+        /*try {
             Statement st = conn.createStatement();
             String validateSQL = String.format("SELECT * FROM users WHERE USERNAME='%s' AND PASSWORD='%s';", username, password);
 //        String validateSQL = "SELECT * FROM login WHERE USERNAME='a' AND PASSWORD='a';";
@@ -58,7 +72,58 @@ public class DBManager {
             return resultSet.next();
         } catch (SQLException e){
             return false;
+        }*/
+        if(username == null || password == null)
+            return false;
+        // hash password
+        String hash = hashPassword(password);
+
+
+        try {
+            // Parse JSON object
+            InputStream input = Converter.class.getResourceAsStream("/users.json");
+
+            Scanner sc = new Scanner(input);
+            StringBuffer sb = new StringBuffer();
+            while(sc.hasNext())
+                sb.append(sc.nextLine());
+
+            Object obj = new JSONParser().parse(sb.toString());
+            // typecast obj to JSONObject
+            JSONObject jo = (JSONObject) obj;
+            // get users
+            JSONArray array = (JSONArray) jo.get("users");
+
+            // Iterate over users
+            Iterator it1 = array.iterator();
+            Iterator<Map.Entry> it2;
+
+            boolean userValid = false;
+            boolean name = false;
+            boolean pass = false;
+            while(it1.hasNext()) {
+                name = false;
+                pass = false;
+                it2 = ((Map) it1.next()).entrySet().iterator();
+                while(it2.hasNext()){
+                    Map.Entry pair = it2.next();
+                    if(pair.getKey().equals("username") && pair.getValue().equals(username))
+                        name = true;
+                    if(pair.getKey().equals("password") && pair.getValue().equals(hash))
+                        pass = true;
+                    if(name && pass) {
+                        userValid = true;
+                        break;
+                    }
+                }
+                if(userValid)
+                    break;
+            }
+            return userValid;
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
     public ArrayList<UserPost> getUserPosts(int viewCount){
