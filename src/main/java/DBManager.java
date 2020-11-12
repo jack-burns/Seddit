@@ -221,6 +221,38 @@ public class DBManager {
         }
     }
 
+    public boolean modifyFile(Part filePart, int fileID){
+        try {
+            PreparedStatement st = conn.prepareStatement("UPDATE uploads SET description = ?, data = ?, filename = ?, filesize = ?, filetype = ?  WHERE id = ?");
+            st.setString(1, filePart.getName());
+            st.setString(2, String.valueOf(filePart.getInputStream()));
+            st.setString(3, filePart.getSubmittedFileName());
+            st.setString(4, String.valueOf(filePart.getSize()));
+            st.setString(5, filePart.getContentType());
+            st.setInt(6, fileID);
+            st.executeUpdate();// need to use executeUpdate for insertion and deletion
+            return true;
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteFile(int fileID){
+        try
+        {
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM uploads WHERE id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, fileID);
+            statement.executeUpdate();
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     public String formatDate(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(date);

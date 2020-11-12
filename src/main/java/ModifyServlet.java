@@ -1,3 +1,5 @@
+import dao.UserPost;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,9 +20,13 @@ public class ModifyServlet extends  HttpServlet{
         db.getConnection();
 
         int userPostID = Integer.parseInt(req.getParameter("postID"));
+        UserPost userPost = db.getUserPost(userPostID);
+        int fileID = userPost.getFileAttachment().getId();
 
         //get UserPost
-        req.setAttribute("UserPost", db.getUserPost(userPostID));
+        req.getSession().setAttribute("UserPost", userPost);
+        req.getSession().setAttribute("postID", userPostID);
+        req.getSession().setAttribute("fileID", fileID);
 
         //send client to post modification page
 

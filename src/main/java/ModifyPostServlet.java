@@ -12,7 +12,7 @@ public class ModifyPostServlet extends ModifyServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         DBManager db = new DBManager();
-        int postID = Integer.parseInt(req.getParameter("postID"));
+        int postID = (Integer) req.getSession().getAttribute("postID");
 
         if(req.getParameter("modifyPost")!=null) {
 

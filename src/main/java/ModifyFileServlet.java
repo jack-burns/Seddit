@@ -2,14 +2,40 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name="ModifyFile", urlPatterns = "/modifyFile")
+@javax.servlet.annotation.MultipartConfig
 public class ModifyFileServlet extends ModifyServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+
+        DBManager db = new DBManager();
+        int fileID = (Integer) req.getSession().getAttribute("fileID");
+
+
+
+        Part filePart = req.getPart("file");
+        if(filePart!=null){
+            if(!db.modifyFile(filePart, fileID)){
+                PrintWriter writer = resp.getWriter();
+                writer.write("<H1>Update failed!</H1>");
+                writer.flush();
+            }
+        }
+
+        if(req.getParameter("deleteFile")!=null){
+            if(!db.deleteFile(fileID)){
+                PrintWriter writer = resp.getWriter();
+                writer.write("<H1>Deletion failed!</H1>");
+                writer.flush();
+            }
+
+        }
+        resp.sendRedirect("home");
     }
 
     @Override
