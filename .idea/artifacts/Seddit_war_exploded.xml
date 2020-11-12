@@ -12,7 +12,6 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="Seddit" />
-          <element id="file-copy" path="$PROJECT_DIR$/src/main/webapp/WEB-INF/users.json" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.22" />
