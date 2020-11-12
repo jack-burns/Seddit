@@ -18,6 +18,9 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DBManager {
 
@@ -141,7 +144,8 @@ public class DBManager {
 //                            getUserName(resultSet.getInt("from_user_id")),
 //                            String.valueOf(resultSet.getInt("from_user_id")),
                             resultSet.getString("create_timestamp"),
-                            resultSet.getString("modified_timestamp"));
+                            resultSet.getString("modified_timestamp"),
+                            resultSet.getInt("id"));
 
                     userPostArrayList.add(userPost);
                     i++;
@@ -152,7 +156,8 @@ public class DBManager {
                             resultSet.getString("content"),
                             String.valueOf(resultSet.getInt("from_user_id")),
                             resultSet.getString("create_timestamp"),
-                            resultSet.getString("modified_timestamp"));
+                            resultSet.getString("modified_timestamp"),
+                            resultSet.getInt("id"));
 
                     userPostArrayList.add(0,userPost);
                 }
@@ -175,6 +180,7 @@ public class DBManager {
             if (generatedKeys.next()){
                 int post_id = generatedKeys.getInt(1);
                 postFile(filePart, post_id);
+                insertHashtags(content, post_id);//added for hashtag parsing
             }
         } catch (SQLException e){}
     }
@@ -200,7 +206,7 @@ public class DBManager {
         try{
             Statement st = conn.createStatement();
             String idQuerying = String.format("SELECT id FROM users WHERE username = '%s';", userName);
-            System.out.println(idQuerying);
+            //System.out.println(idQuerying);
             ResultSet resultSet = st.executeQuery(idQuerying);
             resultSet.next(); //.next() because cursor starts before result row 1
             userId = resultSet.getInt("id");
@@ -226,7 +232,65 @@ public class DBManager {
 
     }
 
+    public boolean modifyPost(int postID, String title, String content){
+        try
+        {
+            PreparedStatement statement = conn.prepareStatement("UPDATE posts SET title = ?, content = ?, modified_timestamp =? WHERE id =?"); //there might be a more efficient way to query this
+            statement.setString(1, title);
+            statement.setString(2, content);
+            statement.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            statement.setInt(4, postID);
+            statement.executeUpdate();
+            return true;
 
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deletePost(int postID){
+        try
+        {
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM posts WHERE id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public void insertHashtags(String content, int post_id){
+        List<String> tags = contentHashtagParsing(content);
+        if(tags.size() != 0){
+            try {
+                Statement st = conn.createStatement();
+                String hashtagSQL = "INSERT INTO hashtags (tag, to_post_id) VALUES ";
+                for(String tag : tags){
+                    hashtagSQL = hashtagSQL + String.format("('%s',%d), ", tag, post_id);
+                }
+                hashtagSQL = hashtagSQL.substring(0, hashtagSQL.length()-2) + ";";//this is a hacky way of doing it, have to get rid of the last ", " in sql string there is probably a better way
+                st.executeUpdate(hashtagSQL);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private List<String> contentHashtagParsing(String content){
+        Pattern pattern = Pattern.compile("#\\w+");//somehow underscore is readily recognized as alphanumerical
+        List<String>  allMatches = new ArrayList<String>();
+        Matcher hashtagMatcher = pattern.matcher(content);
+        while(hashtagMatcher.find()){
+            allMatches.add(hashtagMatcher.group());
+        }
+        return allMatches;
+    }
 
 
 }

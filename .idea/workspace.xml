@@ -8,12 +8,19 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BranchesTreeState">
+    <expand />
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="3153d61c-b6cb-442c-bade-d44fc4d5a58f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Pull.Settings">
+    <option name="BRANCH" value="main" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -293,6 +300,14 @@
       <screen x="4000" y="842" width="2560" height="1440" />
     </state>
     <state x="4088" y="1209" width="1708" height="732" key="dock-window-1/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604700352146" />
+    <state x="361" y="459" key="extract.method.dialog" timestamp="1604880679250">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="361" y="459" key="extract.method.dialog/0.0.2560.1400@0.0.2560.1400" timestamp="1604880679250" />
+    <state x="13" y="319" key="new project wizard" timestamp="1604878854621">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="13" y="319" key="new project wizard/0.0.2560.1400@0.0.2560.1400" timestamp="1604878854621" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
