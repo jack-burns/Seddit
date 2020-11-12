@@ -13,6 +13,7 @@ import javax.servlet.http.Part;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
@@ -191,7 +192,37 @@ public class DBManager {
 
         return userPost;
     }
+
+    public FileAttachment getFileAttachment(int fileId){
+        FileAttachment fileAttachment = new FileAttachment();
+
+        try
+        {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM uploads WHERE id =?"); //there might be a more efficient way to query this
+            st.setInt(1, fileId);
+            ResultSet resultSet = st.executeQuery();
+
+            resultSet.next();
+
+            fileAttachment = new FileAttachment(resultSet.getInt("uploads.id"),
+                    resultSet.getString("filename"),
+                    resultSet.getString("description"),
+                    resultSet.getString("filesize"),
+                    resultSet.getString("filetype"),
+                    resultSet.getBlob("data"));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return fileAttachment;
+
+
+    }
+
     public void postMessage(String title, String content, String username, Part filePart) {
+
+
         UserPost userPost = new UserPost(title, content, username);
         try {
             Statement st = conn.createStatement();
@@ -209,14 +240,26 @@ public class DBManager {
         }
     }
 
+
     public void postFile(Part filePart, int post_id) {
         InputStream inputStream = null;
         try {
+
             inputStream = filePart.getInputStream();
-            Statement st = conn.createStatement();
-            String postFileSQL = String.format("INSERT INTO uploads (description, data, filename, filesize, filetype, to_post_id) VALUES ('%s', '%s', '%s', '%s', '%s', '%d');",
-                    filePart.getName(), inputStream, filePart.getSubmittedFileName(), filePart.getSize(), filePart.getContentType(), post_id);
-            st.executeUpdate(postFileSQL);// need to use executeUpdate for insertion and deletion
+//            byte[] bytes = new byte[1024];
+//            for (int i = inputStream.read(); i!=-1; i= inputStream.read()){
+//                bytes[i] = (byte) inputStream.read();
+//
+//            }
+            String postFileSQL = "INSERT INTO uploads (description, data, filename, filesize, filetype, to_post_id) VALUES (?,?,?,?,?,?);";
+            PreparedStatement st = conn.prepareStatement(postFileSQL);
+            st.setString(1, filePart.getName());
+            st.setBlob(2,inputStream);
+            st.setString(3,filePart.getSubmittedFileName());
+            st.setLong(4, filePart.getSize());
+            st.setString(5, filePart.getContentType());
+            st.setInt(6,post_id);
+            st.executeUpdate();// need to use executeUpdate for insertion and deletion
         } catch (IOException | SQLException e) {
         }
     }
