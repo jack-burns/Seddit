@@ -15,11 +15,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3153d61c-b6cb-442c-bade-d44fc4d5a58f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Seddit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Seddit.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/UserPost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/UserPost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/Seddit-beta/posts.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Seddit-beta/posts.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
