@@ -1,5 +1,6 @@
 <%@ page import="dao.FileAttachment" %>
 <%@ page import="dao.UserPost" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     UserPost userPost = (UserPost) request.getSession().getAttribute("UserPost");
@@ -23,7 +24,7 @@
     </form>
 
     <form action="modifyFile" method="POST" enctype="multipart/form-data">
-        File Attachment: <%=fileAttachment.getName()%>
+        File Attachment: <%=Objects.toString(fileAttachment.getName(), "No Attachment")%>
         <input type="file" name="file" size="50"/>
         <input type = "submit" name = "uploadFile" value = "Replace file">
         <input type = "submit" name = "deleteFile" value = "Delete">

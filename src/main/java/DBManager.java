@@ -1,7 +1,6 @@
 //import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import com.google.common.base.Converter;
 import com.google.common.hash.Hashing;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import dao.FileAttachment;
 import dao.UserPost;
 import org.json.simple.JSONArray;
@@ -10,11 +9,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.servlet.http.Part;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -241,7 +237,7 @@ public class DBManager {
     }
 
 
-    public void postFile(Part filePart, int post_id) {
+    public boolean postFile(Part filePart, int post_id) {
         InputStream inputStream = null;
         try {
 
@@ -262,6 +258,7 @@ public class DBManager {
             st.executeUpdate();// need to use executeUpdate for insertion and deletion
         } catch (IOException | SQLException e) {
         }
+        return false;
     }
 
     public boolean modifyFile(Part filePart, int fileID){
