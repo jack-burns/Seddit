@@ -25,14 +25,14 @@ public class ModifyFileServlet extends ModifyServlet{
 
                 if(!db.modifyFile(filePart, fileID)){
                     PrintWriter writer = resp.getWriter();
-                    writer.write("<H1>Update failed!</H1>");
+                    writer.write("<H1>Update file failed!</H1>");
                     writer.flush();
                 }
             }else{
 
                 if(!db.postFile(filePart, (Integer) req.getSession().getAttribute("postID"))){
                     PrintWriter writer = resp.getWriter();
-                    writer.write("<H1>Update failed!</H1>");
+                    writer.write("<H1>Post new file failed!</H1>");
                     writer.flush();
                 }
 

@@ -256,9 +256,10 @@ public class DBManager {
             st.setString(5, filePart.getContentType());
             st.setInt(6,post_id);
             st.executeUpdate();// need to use executeUpdate for insertion and deletion
+            return true;
         } catch (IOException | SQLException e) {
+            return false;
         }
-        return false;
     }
 
     public boolean modifyFile(Part filePart, int fileID){
