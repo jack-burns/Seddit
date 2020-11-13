@@ -330,7 +330,7 @@ public class DBManager {
         return username;
     }
 
-    public boolean modifyPost(int postID, String title, String content){
+    public boolean modifyPost(int postID, String title, String content){ //we need appropriate hashtags updating mechanism here as well
         try
         {
             PreparedStatement statement = conn.prepareStatement("UPDATE posts SET title = ?, content = ?, modified_timestamp =? WHERE id =?"); //there might be a more efficient way to query this
@@ -379,6 +379,8 @@ public class DBManager {
             }
         }
     }
+
+    //we need to add a method there, one that returns the joint of user, hashtag and posts, then in accordance to which field is empty, we need to add AND to our sql statement
 
     private List<String> contentHashtagParsing(String content){
         Pattern pattern = Pattern.compile("#\\w+");//somehow underscore is readily recognized as alphanumerical
