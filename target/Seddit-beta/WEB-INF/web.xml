@@ -10,8 +10,8 @@
 <!--        <servlet-name>ModificationManager</servlet-name>-->
 <!--        <jsp-file>/modify.jsp</jsp-file>-->
 <!--    </servlet>-->
-    <servlet-mapping>
-        <servlet-name>ModifyServlet</servlet-name>
-        <url-pattern>/modify</url-pattern>
-    </servlet-mapping>
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>ModifyServlet</servlet-name>-->
+<!--        <url-pattern>/modify</url-pattern>-->
+<!--    </servlet-mapping>-->
 </web-app>

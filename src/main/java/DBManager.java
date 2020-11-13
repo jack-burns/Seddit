@@ -130,7 +130,7 @@ public class DBManager {
         try {
             Statement st = conn.createStatement();
 //            String getUserPostsSQL = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id ORDER BY posts.id DESC;";
-            String getUserPostsWithAttachmentSQL = "SELECT * FROM posts RIGHT OUTER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id ORDER BY posts.id DESC;";
+            String getUserPostsWithAttachmentSQL = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id ORDER BY posts.id DESC;";
             ResultSet resultSet = st.executeQuery(getUserPostsWithAttachmentSQL);
             int i = 0;
             while (resultSet.next()) {

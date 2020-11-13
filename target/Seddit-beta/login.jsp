@@ -29,7 +29,7 @@
         }
     }
 //    userName = (String) session.getAttribute("username");
-    if(userName != null) response.sendRedirect("login");
+    if(userName != null) response.sendRedirect("home");
 %>
 <div class="global-container">
 <section class="container-fluid">
