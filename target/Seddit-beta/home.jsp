@@ -22,7 +22,9 @@
         }
     }
 //    userName = (String) session.getAttribute("username");
-    if(userName == null) response.sendRedirect("login");
+    if(userName == null){
+        response.sendRedirect("login");
+    }else{
 %>
 
 <h1>Hi <%=userName%>, Welcome to Seddit</h1>
@@ -42,6 +44,9 @@
 </form>
 
 <%@ include file="posts.jsp" %>
+<%
+    }
+%>
 
 </body>
 </html>
