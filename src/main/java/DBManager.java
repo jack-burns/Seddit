@@ -380,6 +380,89 @@ public class DBManager {
         }
     }
 
+    public ArrayList<UserPost> searchPost(String username, String hashtag, String fromDate, String toDate){//will search as long as one field is valid
+        ArrayList<UserPost> searchResults = new ArrayList<>();
+
+        try {
+            Statement searchQuery = conn.createStatement();
+            //LEFT JOIN users, posts, hashtags and uploads tables together to accommodate for any combination of search between date range, username(singular) and hashtag(s)
+            String selectClause = "SELECT DISTINCT users.id, posts.id, title, content, username, create_timestamp, modified_timestamp, uploads.id, filename, description, filesize, filetype, data";
+            //it seems like any keys with repeated names from tables that are join together need to be in the select clause otherwise the java sql library will see it as syntax error although the workbench works fine
+            String fromClause = "FROM (((users LEFT JOIN posts ON users.id = posts.from_user_id) LEFT JOIN hashtags ON posts.id = hashtags.to_post_id) LEFT JOIN uploads ON posts.id = uploads.to_post_id)";
+            String whereClause = "WHERE ";
+
+            //composing WHERE clause
+            String usernameWhereClause = "";
+            String hashtagWhereClause = "";
+            String fromDateWhereClause = "";
+            String toDateWhereClause = "";
+
+            if(!username.isEmpty()){
+                usernameWhereClause = "username = '" + username + "'";
+            }
+
+            List<String> hashtags = new ArrayList<>();
+            hashtags = contentHashtagParsing(hashtag);
+            if(!hashtags.isEmpty()){
+                hashtagWhereClause = "(";
+                for(String tag: hashtags){
+                    hashtagWhereClause = hashtagWhereClause + "tag = '" + tag + "' OR ";
+                }
+                hashtagWhereClause = hashtagWhereClause.substring(0, hashtagWhereClause.length()-4) + ")";
+            }
+
+
+            if(!fromDate.isEmpty()){
+                fromDateWhereClause = "modified_timestamp >= '" + fromDate + "'"; //maybe we need to handle if user gets from and to mixed up
+            }
+            if(!toDate.isEmpty()){
+                System.out.println("toDate is empty: " + false + " " + toDate);
+                toDateWhereClause = "modified_timestamp >= '" + toDate + "'";
+            }
+
+            String[] searchTerms = {usernameWhereClause, hashtagWhereClause, fromDateWhereClause, toDateWhereClause};
+            boolean atLeastOneWhereTerm = false;
+
+            for(String term : searchTerms){
+                if(!term.isEmpty()){
+                    atLeastOneWhereTerm = true;
+                    whereClause = whereClause + term + " AND ";
+                }
+            }
+
+            //query DB and process results if there is at least a single term in WHERE clause
+            if(atLeastOneWhereTerm){
+                whereClause = whereClause.substring(0, whereClause.length() - 5) + ";";
+                String sqlQuery = selectClause + "\n" + fromClause + "\n" + whereClause;
+                System.out.println(sqlQuery);
+                ResultSet resultSet = searchQuery.executeQuery(sqlQuery);//okay, you cannot compose strings inside the parameter
+                while (resultSet.next()) {
+                    FileAttachment file = new FileAttachment(resultSet.getInt("uploads.id"),
+                            resultSet.getString("filename"),
+                            resultSet.getString("description"),
+                            resultSet.getString("filesize"),
+                            resultSet.getString("filetype"),
+                            resultSet.getBlob("data"));
+                    UserPost userPost = new UserPost(resultSet.getInt("users.id"),
+                            resultSet.getString("title"),
+                            resultSet.getString("content"),
+                            resultSet.getString("username"),
+                            resultSet.getString("create_timestamp"),
+                            resultSet.getString("modified_timestamp"),
+                            file,
+                            resultSet.getInt("posts.id"));
+                    searchResults.add(userPost);
+                }
+
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return searchResults;
+    }
+
     //we need to add a method there, one that returns the joint of user, hashtag and posts, then in accordance to which field is empty, we need to add AND to our sql statement
 
     private List<String> contentHashtagParsing(String content){

@@ -43,6 +43,10 @@
     <input type="submit" name="postmessage" value="Post"/>
 </form>
 
+<form action="search" method="get">
+    <input name = "search" type="submit" value = "Search Posts">
+</form>
+
 <%@ include file="posts.jsp" %>
 <%
     }
