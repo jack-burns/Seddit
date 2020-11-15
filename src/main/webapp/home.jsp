@@ -22,6 +22,7 @@
         }
         .global-container{
             background-color: #f5f5f5;
+            height: 100%;
         }
 
         .submit-form{
