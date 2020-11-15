@@ -22,14 +22,20 @@
         }
 
         .submit-form{
-            margin-top:70px;
-            padding-top: 20px;
+            margin-top:100px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            -webkit-box-shadow: 0 10px 6px -6px #777;
+            -moz-box-shadow: 0 10px 6px -6px #777;
+            box-shadow: 0 10px 6px -6px #777;
         }
 
         .welcome-msg{
             color: white;
             margin-right:20px;
         }
+
     </style>
 </head>
 <body>
@@ -80,10 +86,10 @@
 
     <div class="container">
     <form action="home" method="post"class="submit-form" enctype="multipart/form-data">
-        <label for="title">Title:</label>
-        <input name="title" type="text" id="title">
-        <label for="content">Enter your content:</label>
-        <textarea name="content" id="content"></textarea>
+        <label for="title">Title:</label><br>
+        <input name="title" type="text" id="title"><br>
+        <label for="content">Enter your content:</label><br>
+        <textarea name="content" id="content" rows="3"></textarea> <br><br>
         <input type="file" class="btn btn-secondary" name="file" size="50"/>
        <input type="submit" class="btn btn-secondary" name="postmessage" value="Post"/>
     </form>
