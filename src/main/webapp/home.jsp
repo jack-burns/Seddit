@@ -55,7 +55,7 @@
 //    userName = (String) session.getAttribute("username");
         if(userName == null){ 
             response.sendRedirect("login");
-        } else {}
+        } else {
     %>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark bg-light">
         <img src="style/seddit.png" width="40" height="40" alt="" loading="img">

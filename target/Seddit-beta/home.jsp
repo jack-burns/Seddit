@@ -53,10 +53,16 @@
             }
         }
 //    userName = (String) session.getAttribute("username");
-    if(userName == null){
-        response.sendRedirect("login");
-    }else{
-%>
+        if(userName == null){ 
+            response.sendRedirect("login");
+        } else {
+    %>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark bg-light">
+        <img src="style/seddit.png" width="40" height="40" alt="" loading="img">
+        <span class="navbar-brand">Seddit</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
@@ -94,15 +100,19 @@
         <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
     </form>
     </div>
-<div class="container">
+<form action="search" method="get">
+    <input name = "search" type="submit" value = "Search Posts">
+</form>
 
+
+ 
+<div class="container">
 <%@ include file="posts.jsp" %>
+
+</div>
 <%
     }
 %>
-
-    <%@ include file="posts.jsp" %>
-</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
