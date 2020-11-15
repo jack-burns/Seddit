@@ -29,7 +29,9 @@ public class LogoutServlet extends HttpServlet {
         }
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
         PrintWriter out = resp.getWriter();
-        out.println("<font color=green>You have successfully logged out.</font>");
+        out.println("<div class='alert alert-success' role='alert'> Successfully Logged Out " +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                " <span aria-hidden='true'>&times;</span></button></div> ");
         rd.include(req, resp);
 //        resp.sendRedirect("login.jsp");
     }
