@@ -57,7 +57,7 @@
 <div class="post-class container">
     <div class="row">
     <div class="col col-10">
-            <h4> <%=userPost.getTitle()%></h4>
+            <h1> <%=userPost.getTitle()%></h1>
             <p>Message: <%=userPost.getContent()%><p>
             <p>User ID: <%=userPost.getUsername()%><p>
             <p>Date created: <%=userPost.getCreate_timestamp()%><p>

@@ -17,6 +17,9 @@
     <link rel="stylesheet" type="text/css" href="style/style.css">
     <title>Seddit</title>
     <style>
+        body{
+            background-color: #f5f5f5;
+        }
         .global-container{
             background-color: #f5f5f5;
         }
@@ -80,15 +83,17 @@
 
     <div class="container">
     <form action="home" method="post"class="submit-form" enctype="multipart/form-data">
+        <h1>Create a new post</h1>
         <label for="title">Title:</label><br>
         <input name="title" type="text" id="title"><br>
         <label for="content">Enter your content:</label><br>
         <textarea name="content" id="content" rows="3"></textarea> <br><br>
         <input type="file" class="btn btn-secondary" name="file" size="50"/>
 
-<form action="search" method="get">
-    <input name = "search" type="submit" value = "Search Posts">
-</form>
+        <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
+    </form>
+    </div>
+<div class="container">
 
 <%@ include file="posts.jsp" %>
 <%
