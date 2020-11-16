@@ -34,7 +34,9 @@ public class LoginServlet extends HttpServlet {
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
                     if(req.getParameter("username")!=null || req.getParameter("password")!=null) {
                         PrintWriter out = resp.getWriter();
-                        out.println("<font color=red>Wrong username or password.</font>");
+                        out.println("<div class='alert alert-danger' role='alert'> Wrong username or password " +
+                                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                                    " <span aria-hidden='true'>&times;</span></button></div> ");
                     }
                     rd.include(req, resp);
                 }
