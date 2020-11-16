@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../style/style.css">
+    <link rel="stylesheet" type="text/css" href="style/style.css">
     <title>Post</title>
     <style>
         .post-class{
@@ -48,16 +48,20 @@
 %>
 <div class="post-class">
 
-            <h4> <%=userPost.getTitle()%></h4>
+            <h4>Title: <%=userPost.getTitle()%></h4>
             <p>Message: <%=userPost.getContent()%><p>
             <p>User ID: <%=userPost.getUsername()%><p>
             <p>Date created: <%=userPost.getCreate_timestamp()%><p>
             <p>Date modified: <%=userPost.getModified_timestamp()%><p>
+    <%
+        if(userPost.getFileAttachment().getId()!=0){
+    %>
     <form action="download" method="get">
     <p>File Attachment: <%=userPost.getFileAttachment().getName()%></p>
     <button class="btn btn-secondary" type="submit" name="fileID" value="<%=userPost.getFileAttachment().getId()%>">Download</button>
     </form>
             <%
+                }
                 if(userName.equals(userPost.getUsername())){
             %>
                 <form action="modify" method="GET">

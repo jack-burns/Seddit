@@ -17,19 +17,29 @@
     <link rel="stylesheet" type="text/css" href="style/style.css">
     <title>Seddit</title>
     <style>
+        body{
+            background-color: #f5f5f5;
+        }
         .global-container{
             background-color: #f5f5f5;
+            height: 100%;
         }
 
         .submit-form{
-            margin-top:70px;
-            padding-top: 20px;
+            margin-top:100px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            -webkit-box-shadow: 0 10px 6px -6px #777;
+            -moz-box-shadow: 0 10px 6px -6px #777;
+            box-shadow: 0 10px 6px -6px #777;
         }
 
         .welcome-msg{
             color: white;
             margin-right:20px;
         }
+
     </style>
 </head>
 <body>
@@ -43,7 +53,9 @@
             }
         }
 //    userName = (String) session.getAttribute("username");
-        if(userName == null) response.sendRedirect("login");
+        if(userName == null){ 
+            response.sendRedirect("login");
+        } else {
     %>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark bg-light">
         <img src="style/seddit.png" width="40" height="40" alt="" loading="img">
@@ -58,7 +70,7 @@
                     <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Search</a>
+                    <a class="nav-link" href="/search.jsp">Search</a>
                 </li>
             </ul>
            <span class="welcome-msg">Logged in as <%=userName%> </span>
@@ -78,19 +90,29 @@
 
     <div class="container">
     <form action="home" method="post"class="submit-form" enctype="multipart/form-data">
-        <label for="title">Title:</label>
-        <input name="title" type="text" id="title">
-        <label for="content">Enter your content:</label>
-        <textarea name="content" id="content"></textarea>
+        <h1>Create a new post</h1>
+        <label for="title">Title:</label><br>
+        <input name="title" type="text" id="title"><br>
+        <label for="content">Enter your content:</label><br>
+        <textarea name="content" id="content" rows="3"></textarea> <br><br>
         <input type="file" class="btn btn-secondary" name="file" size="50"/>
 
-        <input type="submit" class="btn btn-secondary" name="postmessage" value="Post"/>
+        <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
     </form>
     </div>
-<div class="container">
+<form action="search" method="get">
+    <input name = "search" type="submit" value = "Search Posts">
+</form>
 
-    <%@ include file="posts.jsp" %>
+
+ 
+<div class="container">
+<%@ include file="posts.jsp" %>
+
 </div>
+<%
+    }
+%>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

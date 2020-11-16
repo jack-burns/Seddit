@@ -53,11 +53,15 @@
             <p>User ID: <%=userPost.getUsername()%><p>
             <p>Date created: <%=userPost.getCreate_timestamp()%><p>
             <p>Date modified: <%=userPost.getModified_timestamp()%><p>
+    <%
+        if(userPost.getFileAttachment().getId()!=0){
+    %>
     <form action="download" method="get">
     <p>File Attachment: <%=userPost.getFileAttachment().getName()%></p>
     <button class="btn btn-secondary" type="submit" name="fileID" value="<%=userPost.getFileAttachment().getId()%>">Download</button>
     </form>
             <%
+                }
                 if(userName.equals(userPost.getUsername())){
             %>
                 <form action="modify" method="GET">
