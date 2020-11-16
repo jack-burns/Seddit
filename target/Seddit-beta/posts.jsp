@@ -28,15 +28,21 @@
             -moz-box-shadow: 0 10px 6px -6px #777;
             box-shadow: 0 10px 6px -6px #777;
         }
+
+        .page-buttons{
+            text-align: right;
+        }
     </style>
 </head>
 <body>
 
 <form action="home" method="get">
+    <div class="page-buttons">
     <input type="submit" class="btn btn-primary" name="viewposts" value="10">
     <input type="submit" class="btn btn-primary" name="viewposts" value="25">
     <input type="submit" class="btn btn-primary"name="viewposts" value="50">
     <input type="submit" class="btn btn-primary" name="viewposts" value="all">
+    </div>
 </form>
 
 <%
