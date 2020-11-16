@@ -339,6 +339,13 @@ public class DBManager {
             statement.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
             statement.setInt(4, postID);
             statement.executeUpdate();
+
+            statement = conn.prepareStatement("DELETE FROM hashtags WHERE to_post_id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+
+            insertHashtags(content, postID);
+
             return true;
 
         }
@@ -351,9 +358,16 @@ public class DBManager {
     public boolean deletePost(int postID){
         try
         {
-            PreparedStatement statement = conn.prepareStatement("DELETE FROM posts WHERE id=?"); //there might be a more efficient way to query this
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM hashtags WHERE to_post_id=?"); //there might be a more efficient way to query this
             statement.setInt(1, postID);
             statement.executeUpdate();
+            statement = conn.prepareStatement("DELETE FROM uploads WHERE to_post_id=?");
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+            statement = conn.prepareStatement("DELETE FROM posts WHERE id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+
             return true;
         }
         catch(SQLException e){
