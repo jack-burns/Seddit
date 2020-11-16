@@ -47,11 +47,11 @@
     if(userName != null) response.sendRedirect("home");
 %>
 <div class="global-container">
-<section class="container-fluid">
-    <section class="row justify-content-center">
-        <section class="col-12 col-sm-6 col-md-3">
-            <form  class="form-style" action="login" method="post">
-                <h1>Log in to Seddit</h1>
+    <section class="container-fluid">
+        <section class="row justify-content-center">
+            <section class="col-12 col-sm-6 col-md-3">
+                <form  class="form-style" action="login" method="post">
+                    <h1>Log in to Seddit</h1>
                     <div class="form-group">
                         <label for="usernameLabel">Username</label>
                         <input type="text" class="form-control" id="usernameLabel" name="username">
@@ -60,12 +60,12 @@
                         <label for="passwordLabel">Password</label>
                         <input type="password" class="form-control" id="passwordLabel" name="password">
                     </div>
-                        <input class="btn btn-primary btn-block" type="submit" value="Sign in">
+                    <input class="btn btn-primary btn-block" type="submit" value="Sign in">
 
-            </form>
+                </form>
+            </section>
         </section>
     </section>
-</section>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
