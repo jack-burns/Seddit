@@ -88,11 +88,11 @@
         <div class="submit-form">
     <h1>Modify your post</h1>
     <form action="modifyPost" method="POST">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name = "title" value="<%=userPost.getTitle()%>">
+        <label for="title"><h5>Title:</h5></label>
+        <input type="text" id="title" class="form-control" name = "title" value="<%=userPost.getTitle()%>">
         <br/>
-        <label for="content">Title:</label>
-        <textarea id="content" name = "content" ><%=userPost.getContent()%></textarea>
+        <label for="content"><h5>Content:</h5></label>
+        <textarea id="content" class="form-control" name = "content" ><%=userPost.getContent()%></textarea>
         <br/>
         <input type="submit" class="btn btn-primary" name="modifyPost" value="Post Comment">
         <input type = "submit" class="btn btn-primary" name = "deletePost" value = "Delete">
@@ -100,9 +100,9 @@
 
     <form action="modifyFile" method="POST" enctype="multipart/form-data">
         File Attachment: <%=Objects.toString(fileAttachment.getName(), "No Attachment")%>
-        <input type="file" name="file" size="50"/>
+        <input type="file" class="btn btn-secondary" name="file" size="50"/>
         <input type = "submit" class="btn btn-secondary" name = "uploadFile" value = "Replace file">
-        <input type = "submit" class="btwn btn-secondary" name = "deleteFile" value = "Delete">
+        <input type = "submit" class="btn btn-secondary" name = "deleteFile" value = "Delete">
     </form>
         </div>
         <%--
