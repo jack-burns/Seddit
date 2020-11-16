@@ -100,9 +100,6 @@
         <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
     </form>
     </div>
-<form action="search" method="get">
-    <input name = "search" type="submit" value = "Search Posts">
-</form>
 
 
  

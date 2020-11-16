@@ -32,6 +32,10 @@
         .page-buttons{
             text-align: right;
         }
+
+        .modify-class{
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -52,8 +56,9 @@
         for (Object post : userPosts) {
             UserPost userPost = (UserPost) post;
 %>
-<div class="post-class">
-
+<div class="post-class container">
+<div class="row">
+    <div class="col col-10">
             <h4>Title: <%=userPost.getTitle()%></h4>
             <p>Message: <%=userPost.getContent()%><p>
             <p>User ID: <%=userPost.getUsername()%><p>
@@ -70,6 +75,8 @@
                 }
                 if(userName.equals(userPost.getUsername())){
             %>
+    </div>
+    <div class="col modify-class">
                 <form action="modify" method="GET">
                     <%--there must be a better way to do this, maybe handling it in the frontend? also a JSP declaration with content reference to userPost doesn't work here for some reason--%>
                     <input type = "hidden" name = "postID" value = '<%= userPost.getPostID()%>'>
@@ -78,6 +85,8 @@
             <%
                 }
             %>
+    </div>
+</div>
 </div>
 <%
         }
