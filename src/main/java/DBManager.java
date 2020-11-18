@@ -431,7 +431,7 @@ public class DBManager {
             }
             if(!toDate.isEmpty()){
                 System.out.println("toDate is empty: " + false + " " + toDate);
-                toDateWhereClause = "modified_timestamp >= '" + toDate + "'";
+                toDateWhereClause = "modified_timestamp <= '" + toDate + "'";
             }
 
             String[] searchTerms = {usernameWhereClause, hashtagWhereClause, fromDateWhereClause, toDateWhereClause};
@@ -447,6 +447,7 @@ public class DBManager {
             //query DB and process results if there is at least a single term in WHERE clause
             if(atLeastOneWhereTerm){
                 whereClause = whereClause.substring(0, whereClause.length() - 5) + ";";
+                System.out.println("the where clause is: " + whereClause);
                 String sqlQuery = selectClause + "\n" + fromClause + "\n" + whereClause;
                 System.out.println(sqlQuery);
                 ResultSet resultSet = searchQuery.executeQuery(sqlQuery);//okay, you cannot compose strings inside the parameter

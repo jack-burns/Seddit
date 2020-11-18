@@ -28,15 +28,25 @@
             -moz-box-shadow: 0 10px 6px -6px #777;
             box-shadow: 0 10px 6px -6px #777;
         }
+
+        .page-buttons{
+            text-align: right;
+        }
+
+        .modify-class{
+            text-align: right;
+        }
     </style>
 </head>
 <body>
 
 <form action="home" method="get">
-    <input type="submit" class="btn btn-primary" name="viewposts" value="10">
-    <input type="submit" class="btn btn-primary" name="viewposts" value="25">
-    <input type="submit" class="btn btn-primary"name="viewposts" value="50">
-    <input type="submit" class="btn btn-primary" name="viewposts" value="all">
+    <div class="page-buttons">
+        <input type="submit" class="btn btn-primary" name="viewposts" value="10">
+        <input type="submit" class="btn btn-primary" name="viewposts" value="25">
+        <input type="submit" class="btn btn-primary"name="viewposts" value="50">
+        <input type="submit" class="btn btn-primary" name="viewposts" value="all">
+    </div>
 </form>
 
 <%
@@ -46,29 +56,32 @@
         for (Object post : userPosts) {
             UserPost userPost = (UserPost) post;
 %>
-<div class="post-class">
-
-            <h4>Title: <%=userPost.getTitle()%></h4>
+<div class="post-class container">
+    <div class="row">
+        <div class="col col-10">
+            <h1> <%=userPost.getTitle()%></h1>
             <p>Message: <%=userPost.getContent()%><p>
             <p>User ID: <%=userPost.getUsername()%><p>
             <p>Date created: <%=userPost.getCreate_timestamp()%><p>
             <p>Date modified: <%=userPost.getModified_timestamp()%><p>
-    <%
+                <%
         if(userPost.getFileAttachment().getId()!=0){
     %>
-    <form action="download" method="get">
-    <p>File Attachment: <%=userPost.getFileAttachment().getName()%></p>
-    <button class="btn btn-secondary" type="submit" name="fileID" value="<%=userPost.getFileAttachment().getId()%>">Download</button>
-    </form>
+            <form action="download" method="get">
+            <p>File Attachment: <%=userPost.getFileAttachment().getName()%></p>
+            <button class="btn btn-secondary" type="submit" name="fileID" value="<%=userPost.getFileAttachment().getId()%>">Download</button>
+            </form>
             <%
                 }
                 if(userName.equals(userPost.getUsername())){
             %>
-                <form action="modify" method="GET">
-                    <%--there must be a better way to do this, maybe handling it in the frontend? also a JSP declaration with content reference to userPost doesn't work here for some reason--%>
-                    <input type = "hidden" name = "postID" value = '<%= userPost.getPostID()%>'>
-                    <input type="submit" class="btn btn-secondary" value="Modify">
-                </form>
+        </div>
+        <div class="col modify-class">
+            <form action="modify" method="GET">
+                <%--there must be a better way to do this, maybe handling it in the frontend? also a JSP declaration with content reference to userPost doesn't work here for some reason--%>
+                <input type = "hidden" name = "postID" value = '<%= userPost.getPostID()%>'>
+                <input type="submit" class="btn btn-secondary" value="Modify">
+            </form>
             <%
                 }
             %>
