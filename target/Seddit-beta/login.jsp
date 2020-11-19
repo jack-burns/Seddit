@@ -61,6 +61,7 @@
                         <input type="password" class="form-control" id="passwordLabel" name="password">
                     </div>
                     <input class="btn btn-primary btn-block" type="submit" value="Sign in">
+                    <a href="register.jsp">Register</a>
 
                 </form>
             </section>

@@ -53,7 +53,7 @@
             }
         }
 //    userName = (String) session.getAttribute("username");
-        if(userName == null){ 
+        if(userName == null){
             response.sendRedirect("login");
         } else {
     %>
@@ -70,10 +70,10 @@
                     <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Search</a>
+                    <a class="nav-link" href="/search.jsp">Search</a>
                 </li>
             </ul>
-           <span class="welcome-msg">Logged in as <%=userName%> </span>
+            <span class="welcome-msg">Logged in as <%=userName%> </span>
             <!--
              <form class="form-inline mt-2 mt-md-0">
                  <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
@@ -89,30 +89,27 @@
     </nav>
 
     <div class="container">
-    <form action="home" method="post"class="submit-form" enctype="multipart/form-data">
-        <h1>Create a new post</h1>
-        <label for="title">Title:</label><br>
-        <input name="title" type="text" id="title"><br>
-        <label for="content">Enter your content:</label><br>
-        <textarea name="content" id="content" rows="3"></textarea> <br><br>
-        <input type="file" class="btn btn-secondary" name="file" size="50"/>
+        <form action="home" method="post"class="submit-form" enctype="multipart/form-data">
+            <h1>Create a new post</h1>
+            <label for="title"><h5>Title:</h5></label><br>
+            <input name="title" class="form-control" type="text" id="title"><br>
+            <label for="content"><h5>Enter your content:</h5></label><br>
+            <textarea name="content" id="content" class="form-control" rows="3"></textarea> <br><br>
+            <input type="file" class="btn btn-secondary" name="file" size="50"/>
 
-        <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
-    </form>
+            <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
+        </form>
     </div>
-<form action="search" method="get">
-    <input name = "search" type="submit" value = "Search Posts">
-</form>
 
 
- 
-<div class="container">
-<%@ include file="posts.jsp" %>
 
-</div>
-<%
-    }
-%>
+    <div class="container">
+        <%@ include file="posts.jsp" %>
+
+    </div>
+    <%
+        }
+    %>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
