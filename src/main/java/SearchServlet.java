@@ -20,6 +20,7 @@ public class SearchServlet extends HttpServlet{
         String hashtag = req.getParameter("hashtag");//can search multiple hashtags with OR logical relation
         String fromDate = req.getParameter("from");//either from or to can be missing
         String toDate = req.getParameter("to");
+        System.out.println("from date is: " + fromDate + "\n" + "to date is: " + toDate);
 
         DBManager db = new DBManager();
         ArrayList<UserPost> searchResult = db.searchPost(username, hashtag, fromDate, toDate);
