@@ -6,9 +6,9 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name="ModifyFile", urlPatterns = "/app/modifyFile")
+@WebServlet(name = "ModifyFile", urlPatterns = "/app/modifyFile")
 @javax.servlet.annotation.MultipartConfig
-public class ModifyFileServlet extends ModifyServlet{
+public class ModifyFileServlet extends ModifyServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -19,18 +19,17 @@ public class ModifyFileServlet extends ModifyServlet{
         Part filePart = req.getPart("file");
 
 
+        if (filePart != null) {
+            if (fileID != 0) {
 
-        if(filePart!=null){
-            if(fileID!=0){
-
-                if(!db.modifyFile(filePart, fileID)){
+                if (!db.modifyFile(filePart, fileID)) {
                     PrintWriter writer = resp.getWriter();
                     writer.write("<H1>Update file failed!</H1>");
                     writer.flush();
                 }
-            }else{
+            } else {
 
-                if(!db.postFile(filePart, (Integer) req.getSession().getAttribute("postID"))){
+                if (!db.postFile(filePart, (Integer) req.getSession().getAttribute("postID"))) {
                     PrintWriter writer = resp.getWriter();
                     writer.write("<H1>Post new file failed!</H1>");
                     writer.flush();
@@ -39,8 +38,8 @@ public class ModifyFileServlet extends ModifyServlet{
             }
         }
 
-        if(req.getParameter("deleteFile")!=null){
-            if(!db.deleteFile(fileID)){
+        if (req.getParameter("deleteFile") != null) {
+            if (!db.deleteFile(fileID)) {
                 PrintWriter writer = resp.getWriter();
                 writer.write("<H1>Deletion failed!</H1>");
                 writer.flush();

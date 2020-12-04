@@ -15,15 +15,15 @@ public class LogoutServlet extends HttpServlet {
         resp.setContentType("text/html");
         Cookie loginCookie = null;
         Cookie[] cookies = req.getCookies();
-        if(cookies != null){
-            for(Cookie cookie : cookies){
-                if(cookie.getName().equals("user")){
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
                     loginCookie = cookie;
                     break;
                 }
             }
         }
-        if(loginCookie != null){
+        if (loginCookie != null) {
             loginCookie.setMaxAge(0);
             resp.addCookie(loginCookie);
         }

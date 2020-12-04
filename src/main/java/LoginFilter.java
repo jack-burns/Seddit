@@ -1,16 +1,9 @@
-
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * The purpose of this filter is to prevent users who are not logged in
@@ -23,7 +16,8 @@ public class LoginFilter implements Filter {
      * @see Filter#init(FilterConfig)
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     /**
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -46,6 +40,7 @@ public class LoginFilter implements Filter {
      * @see Filter#destroy()
      */
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 
 }

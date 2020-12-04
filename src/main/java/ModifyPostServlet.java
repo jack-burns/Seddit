@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name="ModifyPost", urlPatterns = "/app/modifyPost")
-public class ModifyPostServlet extends ModifyServlet{
+@WebServlet(name = "ModifyPost", urlPatterns = "/app/modifyPost")
+public class ModifyPostServlet extends ModifyServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -14,20 +14,20 @@ public class ModifyPostServlet extends ModifyServlet{
         DBManager db = new DBManager();
         int postID = (Integer) req.getSession().getAttribute("postID");
 
-        if(req.getParameter("modifyPost")!=null) {
+        if (req.getParameter("modifyPost") != null) {
 
             String newContent = req.getParameter("content");
             String newTitle = req.getParameter("title");
 
-            if(!db.modifyPost(postID, newTitle, newContent)){
+            if (!db.modifyPost(postID, newTitle, newContent)) {
                 PrintWriter writer = resp.getWriter();
                 writer.write("<H1>Update failed!</H1>");
                 writer.flush();
             }
         }
 
-        if(req.getParameter("deletePost")!=null){
-            if(!db.deletePost(postID)){
+        if (req.getParameter("deletePost") != null) {
+            if (!db.deletePost(postID)) {
                 PrintWriter writer = resp.getWriter();
                 writer.write("<H1>Deletion failed!</H1>");
                 writer.flush();

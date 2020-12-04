@@ -1,6 +1,5 @@
 package dao;
 
-import java.io.InputStream;
 import java.sql.Blob;
 
 public class FileAttachment {
@@ -12,9 +11,10 @@ public class FileAttachment {
     String type;
     Blob data;
 
-    public FileAttachment(){}
+    public FileAttachment() {
+    }
 
-    public FileAttachment(int id, String name, String desc, String size, String type, Blob data){
+    public FileAttachment(int id, String name, String desc, String size, String type, Blob data) {
         this.id = id;
         this.name = name;
         this.desc = desc;

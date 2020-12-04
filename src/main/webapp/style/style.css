@@ -1,46 +1,46 @@
 /*general CSS*/
-h1{
+h1 {
     text-align: center;
-    font-weight:300;
+    font-weight: 300;
 }
 
-.global-container{
+.global-container {
     background-color: #f5f5f5;
-    overflow:auto;
+    overflow: auto;
 }
 
-btn{
+btn {
     text-align: center;
-    padding:20px 0 0;
+    padding: 20px 0 0;
 }
 
-img{
-    border-radius:50%;
+img {
+    border-radius: 50%;
 }
+
 /*for login page*/
-.form-style{
+.form-style {
 
 
 }
 
-.navbar-brand{
+.navbar-brand {
     color: orangered;
     margin-right: 20px;
     margin-left: 20px;
 }
 
 /* for home page*/
-nav{
+nav {
 
 }
 
-.submit-form{
+.submit-form {
 
 }
+
 /* for posts */
-.post-class{
-
-
+.post-class {
 
 
 }
