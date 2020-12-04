@@ -6,19 +6,18 @@ import java.util.Properties;
 public class Config {
 
     Properties configFile;
-    public Config()
-    {
+
+    public Config() {
         configFile = new Properties();
         try {
             configFile.load(this.getClass().getClassLoader().
-                    getResourceAsStream("WEB-INF/config.properties"));
-        }catch(Exception eta){
+                    getResourceAsStream("db.cfg"));
+        } catch (Exception eta) {
             eta.printStackTrace();
         }
     }
 
-    public String getProperty(String key)
-    {
+    public String getProperty(String key) {
         String value = this.configFile.getProperty(key);
         return value;
     }

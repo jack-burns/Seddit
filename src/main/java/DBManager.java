@@ -1,4 +1,5 @@
 //import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import com.google.common.base.Converter;
 import com.google.common.hash.Hashing;
 import dao.FileAttachment;
@@ -14,25 +15,24 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DBManager {
 
-//    Config cfg = new Config();
+    Config cfg = new Config();
 
-    static String DB_URL = "jdbc:mysql://localhost:3306/";
-    static String DB_NAME = "seddit";
-    static String DB_USER = "admin";
-    static String DB_PASSWORD = "admin";
+//    static String DB_URL = "jdbc:mysql://localhost:3306/";
+//    static String DB_NAME = "seddit";
+//    static String DB_USER = "admin";
+//    static String DB_PASSWORD = "admin";
 
-//    String DB_URL = cfg.getProperty("DB_URL");
-//    String DB_NAME = cfg.getProperty("DB_NAME");
-//    String DB_USER = cfg.getProperty("DB_USER");
-//    String DB_PASSWORD = cfg.getProperty("DB_PASSWORD");
+    String DB_URL = cfg.getProperty("DB_URL");
+    String DB_NAME = cfg.getProperty("DB_NAME");
+    String DB_USER = cfg.getProperty("DB_USER");
+    String DB_PASSWORD = cfg.getProperty("DB_PASSWORD");
 
     static Connection conn = null;
 
@@ -72,7 +72,7 @@ public class DBManager {
         } catch (SQLException e) {
             return false;
         }*/
-        if(username == null || password == null)
+        if (username == null || password == null)
             return false;
         // hash password
         String hash = hashPassword(password);
@@ -84,7 +84,7 @@ public class DBManager {
 
             Scanner sc = new Scanner(input);
             StringBuffer sb = new StringBuffer();
-            while(sc.hasNext())
+            while (sc.hasNext())
                 sb.append(sc.nextLine());
 
             Object obj = new JSONParser().parse(sb.toString());
@@ -100,22 +100,22 @@ public class DBManager {
             boolean userValid = false;
             boolean name = false;
             boolean pass = false;
-            while(it1.hasNext()) {
+            while (it1.hasNext()) {
                 name = false;
                 pass = false;
                 it2 = ((Map) it1.next()).entrySet().iterator();
-                while(it2.hasNext()){
+                while (it2.hasNext()) {
                     Map.Entry pair = it2.next();
-                    if(pair.getKey().equals("username") && pair.getValue().equals(username))
+                    if (pair.getKey().equals("username") && pair.getValue().equals(username))
                         name = true;
-                    if(pair.getKey().equals("password") && pair.getValue().equals(hash))
+                    if (pair.getKey().equals("password") && pair.getValue().equals(hash))
                         pass = true;
-                    if(name && pass) {
+                    if (name && pass) {
                         userValid = true;
                         break;
                     }
                 }
-                if(userValid)
+                if (userValid)
                     break;
             }
             return userValid;
@@ -156,15 +156,16 @@ public class DBManager {
                 i++;
             }
 
-        } catch (SQLException e) {}
+        } catch (SQLException e) {
+        }
         return userPostArrayList;
     }
 
-    public UserPost getUserPost(int postId){
+    public UserPost getUserPost(int postId) {
         UserPost userPost = new UserPost();
-        try{
+        try {
             Statement st = conn.createStatement();
-            String getUserPostsWithAttachmentSQL = "SELECT * FROM posts RIGHT OUTER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id WHERE posts.id="+postId+" ORDER BY posts.id DESC;";
+            String getUserPostsWithAttachmentSQL = "SELECT * FROM posts RIGHT OUTER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id WHERE posts.id=" + postId + " ORDER BY posts.id DESC;";
             ResultSet resultSet = st.executeQuery(getUserPostsWithAttachmentSQL);
             resultSet.next();
             FileAttachment file = new FileAttachment(resultSet.getInt("uploads.id"),
@@ -189,11 +190,10 @@ public class DBManager {
         return userPost;
     }
 
-    public FileAttachment getFileAttachment(int fileId){
+    public FileAttachment getFileAttachment(int fileId) {
         FileAttachment fileAttachment = new FileAttachment();
 
-        try
-        {
+        try {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM uploads WHERE id =?"); //there might be a more efficient way to query this
             st.setInt(1, fileId);
             ResultSet resultSet = st.executeQuery();
@@ -250,11 +250,11 @@ public class DBManager {
             String postFileSQL = "INSERT INTO uploads (description, data, filename, filesize, filetype, to_post_id) VALUES (?,?,?,?,?,?);";
             PreparedStatement st = conn.prepareStatement(postFileSQL);
             st.setString(1, filePart.getName());
-            st.setBlob(2,inputStream);
-            st.setString(3,filePart.getSubmittedFileName());
+            st.setBlob(2, inputStream);
+            st.setString(3, filePart.getSubmittedFileName());
             st.setLong(4, filePart.getSize());
             st.setString(5, filePart.getContentType());
-            st.setInt(6,post_id);
+            st.setInt(6, post_id);
             st.executeUpdate();// need to use executeUpdate for insertion and deletion
             return true;
         } catch (IOException | SQLException e) {
@@ -262,7 +262,7 @@ public class DBManager {
         }
     }
 
-    public boolean modifyFile(Part filePart, int fileID){
+    public boolean modifyFile(Part filePart, int fileID) {
         try {
             PreparedStatement st = conn.prepareStatement("UPDATE uploads SET description = ?, data = ?, filename = ?, filesize = ?, filetype = ?  WHERE id = ?");
             st.setString(1, filePart.getName());
@@ -279,15 +279,13 @@ public class DBManager {
         }
     }
 
-    public boolean deleteFile(int fileID){
-        try
-        {
+    public boolean deleteFile(int fileID) {
+        try {
             PreparedStatement statement = conn.prepareStatement("DELETE FROM uploads WHERE id=?"); //there might be a more efficient way to query this
             statement.setInt(1, fileID);
             statement.executeUpdate();
             return true;
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -330,9 +328,8 @@ public class DBManager {
         return username;
     }
 
-    public boolean modifyPost(int postID, String title, String content){ //we need appropriate hashtags updating mechanism here as well
-        try
-        {
+    public boolean modifyPost(int postID, String title, String content) { //we need appropriate hashtags updating mechanism here as well
+        try {
             PreparedStatement statement = conn.prepareStatement("UPDATE posts SET title = ?, content = ?, modified_timestamp =? WHERE id =?"); //there might be a more efficient way to query this
             statement.setString(1, title);
             statement.setString(2, content);
@@ -348,16 +345,14 @@ public class DBManager {
 
             return true;
 
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean deletePost(int postID){
-        try
-        {
+    public boolean deletePost(int postID) {
+        try {
             PreparedStatement statement = conn.prepareStatement("DELETE FROM hashtags WHERE to_post_id=?"); //there might be a more efficient way to query this
             statement.setInt(1, postID);
             statement.executeUpdate();
@@ -369,32 +364,31 @@ public class DBManager {
             statement.executeUpdate();
 
             return true;
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
 
-    public void insertHashtags(String content, int post_id){
+    public void insertHashtags(String content, int post_id) {
         List<String> tags = contentHashtagParsing(content);
-        if(tags.size() != 0){
+        if (tags.size() != 0) {
             try {
                 Statement st = conn.createStatement();
                 String hashtagSQL = "INSERT INTO hashtags (tag, to_post_id) VALUES ";
-                for(String tag : tags){
+                for (String tag : tags) {
                     hashtagSQL = hashtagSQL + String.format("('%s',%d), ", tag, post_id);
                 }
-                hashtagSQL = hashtagSQL.substring(0, hashtagSQL.length()-2) + ";";//this is a hacky way of doing it, have to get rid of the last ", " in sql string there is probably a better way
+                hashtagSQL = hashtagSQL.substring(0, hashtagSQL.length() - 2) + ";";//this is a hacky way of doing it, have to get rid of the last ", " in sql string there is probably a better way
                 st.executeUpdate(hashtagSQL);
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public ArrayList<UserPost> searchPost(String username, String hashtag, String fromDate, String toDate){//will search as long as one field is valid
+    public ArrayList<UserPost> searchPost(String username, String hashtag, String fromDate, String toDate) {//will search as long as one field is valid
         ArrayList<UserPost> searchResults = new ArrayList<>();
 
         try {
@@ -411,25 +405,25 @@ public class DBManager {
             String fromDateWhereClause = "";
             String toDateWhereClause = "";
 
-            if(!username.isEmpty()){
+            if (!username.isEmpty()) {
                 usernameWhereClause = "username = '" + username + "'";
             }
 
             List<String> hashtags = new ArrayList<>();
             hashtags = contentHashtagParsing(hashtag);
-            if(!hashtags.isEmpty()){
+            if (!hashtags.isEmpty()) {
                 hashtagWhereClause = "(";
-                for(String tag: hashtags){
+                for (String tag : hashtags) {
                     hashtagWhereClause = hashtagWhereClause + "tag = '" + tag + "' OR ";
                 }
-                hashtagWhereClause = hashtagWhereClause.substring(0, hashtagWhereClause.length()-4) + ")";
+                hashtagWhereClause = hashtagWhereClause.substring(0, hashtagWhereClause.length() - 4) + ")";
             }
 
 
-            if(!fromDate.isEmpty()){
+            if (!fromDate.isEmpty()) {
                 fromDateWhereClause = "modified_timestamp >= '" + fromDate + "'"; //maybe we need to handle if user gets from and to mixed up
             }
-            if(!toDate.isEmpty()){
+            if (!toDate.isEmpty()) {
                 System.out.println("toDate is empty: " + false + " " + toDate);
                 toDateWhereClause = "modified_timestamp <= '" + toDate + "'";
             }
@@ -437,15 +431,15 @@ public class DBManager {
             String[] searchTerms = {usernameWhereClause, hashtagWhereClause, fromDateWhereClause, toDateWhereClause};
             boolean atLeastOneWhereTerm = false;
 
-            for(String term : searchTerms){
-                if(!term.isEmpty()){
+            for (String term : searchTerms) {
+                if (!term.isEmpty()) {
                     atLeastOneWhereTerm = true;
                     whereClause = whereClause + term + " AND ";
                 }
             }
 
             //query DB and process results if there is at least a single term in WHERE clause
-            if(atLeastOneWhereTerm){
+            if (atLeastOneWhereTerm) {
                 whereClause = whereClause.substring(0, whereClause.length() - 5) + ";";
                 System.out.println("the where clause is: " + whereClause);
                 String sqlQuery = selectClause + "\n" + fromClause + "\n" + whereClause;
@@ -471,7 +465,7 @@ public class DBManager {
 
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -480,11 +474,11 @@ public class DBManager {
 
     //we need to add a method there, one that returns the joint of user, hashtag and posts, then in accordance to which field is empty, we need to add AND to our sql statement
 
-    private List<String> contentHashtagParsing(String content){
+    private List<String> contentHashtagParsing(String content) {
         Pattern pattern = Pattern.compile("#\\w+");//somehow underscore is readily recognized as alphanumerical
-        List<String>  allMatches = new ArrayList<String>();
+        List<String> allMatches = new ArrayList<String>();
         Matcher hashtagMatcher = pattern.matcher(content);
-        while(hashtagMatcher.find()){
+        while (hashtagMatcher.find()) {
             allMatches.add(hashtagMatcher.group());
         }
         return allMatches;

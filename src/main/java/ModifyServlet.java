@@ -3,11 +3,13 @@ import dao.UserPost;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name="ModifyServlet", urlPatterns = "/modify")
-public class ModifyServlet extends  HttpServlet{
+@WebServlet(name = "ModifyServlet", urlPatterns = "/app/modify")
+public class ModifyServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,8 +36,8 @@ public class ModifyServlet extends  HttpServlet{
         //get FileAttachment
 //        req.setAttribute("FileAttachment", db.get);
 
-        RequestDispatcher dispatchToModifyPage = getServletContext().getRequestDispatcher("/modify.jsp");
-        dispatchToModifyPage.forward(req, resp);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/modify.jsp");
+        rd.forward(req, resp);
     }
 
     /*

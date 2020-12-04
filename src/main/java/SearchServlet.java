@@ -1,17 +1,20 @@
 import dao.UserPost;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name="RedirectToSearchServlet", urlPatterns = "/search")
-public class SearchServlet extends HttpServlet{
+@WebServlet(name = "RedirectToSearchServlet", urlPatterns = "/app/search")
+public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/search.jsp");
-        rd.forward(req,resp);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/search.jsp");
+        rd.forward(req, resp);
     }
 
     @Override
@@ -26,8 +29,8 @@ public class SearchServlet extends HttpServlet{
         ArrayList<UserPost> searchResult = db.searchPost(username, hashtag, fromDate, toDate);
 
         req.setAttribute("UserPosts", searchResult);
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/search.jsp");
-        rd.forward(req,resp);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/search.jsp");
+        rd.forward(req, resp);
 
     }
 }
