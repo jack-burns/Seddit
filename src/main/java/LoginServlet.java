@@ -11,25 +11,14 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         DBManager db = new DBManager();
         db.getConnection();
-        if (db.validateLogin(req.getParameter("username"), req.getParameter("password"))) {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        if (db.validateLogin(username,password)){
             HttpSession session = req.getSession();
             session.setAttribute("loggedInUser", true);
-
-//USER AUTH WITH SESSION
-                    session.setAttribute("username", req.getParameter("username"));
-//                    req.setAttribute("username", req.getParameter("username"));
-//                    Populate with UserPosts
-//                    req.setAttribute("UserPosts", db.getUserPosts());
-//                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/home");
-//                    rd.forward(req,resp);
-
-
-//            Cookie loginCookie = new Cookie("user", req.getParameter("username"));
-//            loginCookie.setMaxAge(30 * 60);
-//            loginCookie.setPath("/");
-//            resp.addCookie(loginCookie);
+            session.setAttribute("username", req.getParameter("username"));
+            session.setAttribute("visibility", db.getUserVisibility(username));
             resp.sendRedirect("/app/home");
-
 
         } else {
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");

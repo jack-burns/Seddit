@@ -1,0 +1,43 @@
+{
+  "memberships": [
+    {
+      "name": "admin",
+      "parent": "",
+      "children": [
+        "concordia",
+        "encs",
+        "soen",
+        "comp"
+      ]
+    },
+    {
+      "name": "concordia",
+      "parent": "admin",
+      "children": [
+        "encs",
+        "soen",
+        "comp"
+      ]
+    },
+    {
+      "name": "encs",
+      "parent": "concordia",
+      "children": [
+        "soen",
+        "comp"
+      ]
+    },
+    {
+      "name": "soen",
+      "parent": "encs",
+      "children": [
+      ]
+    },
+    {
+    "name": "comp",
+    "parent": "encs",
+    "children": [
+    ]
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(name = "PostManager", urlPatterns = "/app/home")
 @javax.servlet.annotation.MultipartConfig
@@ -13,18 +14,20 @@ public class PostManagerServlet extends HttpServlet {
         DBManager db = new DBManager();
         db.getConnection();
 
+        HttpSession session = req.getSession();
+
         //getting username from cookie
-        String username = "";
-        Cookie[] cookies = req.getCookies();
-        if (cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {//can probably clean up using stream
-                Cookie cookie = cookies[i];
-                if ((cookie.getName()).equals("user")) {
-                    username = cookie.getValue();
-                    break;
-                }
-            }
-        }
+        String username = (String) session.getAttribute("username");
+//        Cookie[] cookies = req.getCookies();
+//        if (cookies != null) {
+//            for (int i = 0; i < cookies.length; i++) {//can probably clean up using stream
+//                Cookie cookie = cookies[i];
+//                if ((cookie.getName()).equals("user")) {
+//                    username = cookie.getValue();
+//                    break;
+//                }
+//            }
+//        }
 
         Part filePart = req.getPart("file");
 
@@ -41,6 +44,8 @@ public class PostManagerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        HttpSession session = req.getSession();
+
         DBManager db = new DBManager();
         db.getConnection();
         int viewCount = 10;
@@ -54,7 +59,7 @@ public class PostManagerServlet extends HttpServlet {
         }
 
         //Populate with UserPosts
-        req.setAttribute("UserPosts", db.getUserPosts(viewCount));
+        req.setAttribute("UserPosts", db.getUserPosts(viewCount, (String) session.getAttribute("visibility")));
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/home.jsp");
         rd.forward(req, resp);
     }
