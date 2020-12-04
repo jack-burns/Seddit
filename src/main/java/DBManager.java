@@ -4,6 +4,7 @@ import com.google.common.base.Converter;
 import com.google.common.hash.Hashing;
 import dao.FileAttachment;
 import dao.UserPost;
+import org.checkerframework.checker.units.qual.A;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -59,6 +60,73 @@ public class DBManager {
 
     private String hashPassword(String password) {
         return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+    }
+
+    public String getUserVisibility(String username){
+        String vis = "";
+
+        try {
+            // Parse JSON object
+            InputStream input = Converter.class.getResourceAsStream("/users.json");
+
+            Scanner sc = new Scanner(input);
+            StringBuffer sb = new StringBuffer();
+            while (sc.hasNext())
+                sb.append(sc.nextLine());
+
+            Object obj = new JSONParser().parse(sb.toString());
+            // typecast obj to JSONObject
+            JSONObject jo = (JSONObject) obj;
+            // get users
+            JSONArray array = (JSONArray) jo.get("users");
+            for(int i = 0; i<array.size(); i++) {
+                JSONObject user = (JSONObject) array.get(i);
+                if(username.equals(user.get("username"))) {
+                    vis = (String) user.get("visibility");
+                }
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+            return vis;
+    }
+
+    public ArrayList<String> getAllVisibilities(String membership){
+        ArrayList<String> vis = new ArrayList<>();
+        vis.add(membership);
+
+        try {
+            // Parse JSON object
+            InputStream input = Converter.class.getResourceAsStream("/membership.json");
+
+            Scanner sc = new Scanner(input);
+            StringBuffer sb = new StringBuffer();
+            while (sc.hasNext())
+                sb.append(sc.nextLine());
+
+            Object obj = new JSONParser().parse(sb.toString());
+            // typecast obj to JSONObject
+            JSONObject jo = (JSONObject) obj;
+            // get users
+            JSONArray array = (JSONArray) jo.get("memberships");
+            for(int i = 0; i<array.size(); i++) {
+                JSONObject user = (JSONObject) array.get(i);
+                if(membership.equals(user.get("name"))) {
+                    JSONArray children = (JSONArray) user.get("children");
+                    for(Object child : children){
+                        vis.add((String) child);
+                    }
+                }
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return vis;
+
     }
 
 
@@ -125,12 +193,30 @@ public class DBManager {
         return false;
     }
 
-    public ArrayList<UserPost> getUserPosts(int viewCount) {
+    public String getVisibiltyCondition(ArrayList<String> visibilities){
+        StringBuilder condition = new StringBuilder();
+        if(visibilities.size()>0){
+            condition.append(" WHERE");
+            for(int i = 0; i<visibilities.size();i++){
+                condition.append(" posts.visibility='").append(visibilities.get(i)).append("'");
+                if(i<visibilities.size()-1){
+                    condition.append(" OR");
+                }
+            }
+        }
+        return condition.toString();
+    }
+
+    public ArrayList<UserPost> getUserPosts(int viewCount, String visibility) {
+        ArrayList<String> visibilities = getAllVisibilities(visibility);
         ArrayList<UserPost> userPostArrayList = new ArrayList<>();
         try {
             Statement st = conn.createStatement();
 //            String getUserPostsSQL = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id ORDER BY posts.id DESC;";
-            String getUserPostsWithAttachmentSQL = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id ORDER BY posts.id DESC;";
+            String selectClause = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id";
+            String whereClause = getVisibiltyCondition(visibilities);
+            String orderClause = " ORDER BY posts.id DESC;";
+            String getUserPostsWithAttachmentSQL = selectClause+whereClause+orderClause;
             ResultSet resultSet = st.executeQuery(getUserPostsWithAttachmentSQL);
             int i = 0;
             while (resultSet.next()) {
@@ -161,6 +247,7 @@ public class DBManager {
         return userPostArrayList;
     }
 
+    //TODO visibity check
     public UserPost getUserPost(int postId) {
         UserPost userPost = new UserPost();
         try {
@@ -190,204 +277,7 @@ public class DBManager {
         return userPost;
     }
 
-    public FileAttachment getFileAttachment(int fileId) {
-        FileAttachment fileAttachment = new FileAttachment();
-
-        try {
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM uploads WHERE id =?"); //there might be a more efficient way to query this
-            st.setInt(1, fileId);
-            ResultSet resultSet = st.executeQuery();
-
-            resultSet.next();
-
-            fileAttachment = new FileAttachment(resultSet.getInt("uploads.id"),
-                    resultSet.getString("filename"),
-                    resultSet.getString("description"),
-                    resultSet.getString("filesize"),
-                    resultSet.getString("filetype"),
-                    resultSet.getBlob("data"));
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return fileAttachment;
-
-
-    }
-
-    public void postMessage(String title, String content, String username, Part filePart) {
-
-
-        UserPost userPost = new UserPost(title, content, username);
-        try {
-            Statement st = conn.createStatement();
-            String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES ('%s','%s',%s,'%s','%s');",
-                    userPost.getTitle(), userPost.getContent(), getUserID(userPost.getUsername()), formatDate(userPost.getCreate_timestamp()), formatDate(userPost.getModified_timestamp()));
-            // need to use executeUpdate for insertion and deletion
-            st.executeUpdate(postMessage, Statement.RETURN_GENERATED_KEYS);
-            ResultSet generatedKeys = st.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int post_id = generatedKeys.getInt(1);
-                postFile(filePart, post_id);
-                insertHashtags(content, post_id);//added for hashtag parsing
-            }
-        } catch (SQLException e) {
-        }
-    }
-
-
-    public boolean postFile(Part filePart, int post_id) {
-        InputStream inputStream = null;
-        try {
-
-            inputStream = filePart.getInputStream();
-//            byte[] bytes = new byte[1024];
-//            for (int i = inputStream.read(); i!=-1; i= inputStream.read()){
-//                bytes[i] = (byte) inputStream.read();
-//
-//            }
-            String postFileSQL = "INSERT INTO uploads (description, data, filename, filesize, filetype, to_post_id) VALUES (?,?,?,?,?,?);";
-            PreparedStatement st = conn.prepareStatement(postFileSQL);
-            st.setString(1, filePart.getName());
-            st.setBlob(2, inputStream);
-            st.setString(3, filePart.getSubmittedFileName());
-            st.setLong(4, filePart.getSize());
-            st.setString(5, filePart.getContentType());
-            st.setInt(6, post_id);
-            st.executeUpdate();// need to use executeUpdate for insertion and deletion
-            return true;
-        } catch (IOException | SQLException e) {
-            return false;
-        }
-    }
-
-    public boolean modifyFile(Part filePart, int fileID) {
-        try {
-            PreparedStatement st = conn.prepareStatement("UPDATE uploads SET description = ?, data = ?, filename = ?, filesize = ?, filetype = ?  WHERE id = ?");
-            st.setString(1, filePart.getName());
-            st.setString(2, String.valueOf(filePart.getInputStream()));
-            st.setString(3, filePart.getSubmittedFileName());
-            st.setString(4, String.valueOf(filePart.getSize()));
-            st.setString(5, filePart.getContentType());
-            st.setInt(6, fileID);
-            st.executeUpdate();// need to use executeUpdate for insertion and deletion
-            return true;
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean deleteFile(int fileID) {
-        try {
-            PreparedStatement statement = conn.prepareStatement("DELETE FROM uploads WHERE id=?"); //there might be a more efficient way to query this
-            statement.setInt(1, fileID);
-            statement.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    public String formatDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(date);
-    }
-
-    public int getUserID(String userName) {
-        int userId = -1;
-        try {
-            Statement st = conn.createStatement();
-            String idQuerying = String.format("SELECT id FROM users WHERE username = '%s';", userName);
-            //System.out.println(idQuerying);
-            ResultSet resultSet = st.executeQuery(idQuerying);
-            resultSet.next(); //.next() because cursor starts before result row 1
-            userId = resultSet.getInt("id");
-        } catch (SQLException e) {
-        }
-        return userId;
-    }
-
-
-    // not used, but ill leave it here for the moment
-    public String getUserName(int userId) {
-        String username = "anonymous";
-        try {
-            Statement st = conn.createStatement();
-            String usernameSQL = String.format("SELECT * FROM users WHERE id= '%d';", userId);
-            System.out.println(usernameSQL);
-            ResultSet resultSet = st.executeQuery(usernameSQL);
-            resultSet.next(); //.next() because cursor starts before result row 1
-            username = resultSet.getString("username");
-        } catch (SQLException e) {
-        }
-
-        return username;
-    }
-
-    public boolean modifyPost(int postID, String title, String content) { //we need appropriate hashtags updating mechanism here as well
-        try {
-            PreparedStatement statement = conn.prepareStatement("UPDATE posts SET title = ?, content = ?, modified_timestamp =? WHERE id =?"); //there might be a more efficient way to query this
-            statement.setString(1, title);
-            statement.setString(2, content);
-            statement.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
-            statement.setInt(4, postID);
-            statement.executeUpdate();
-
-            statement = conn.prepareStatement("DELETE FROM hashtags WHERE to_post_id=?"); //there might be a more efficient way to query this
-            statement.setInt(1, postID);
-            statement.executeUpdate();
-
-            insertHashtags(content, postID);
-
-            return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean deletePost(int postID) {
-        try {
-            PreparedStatement statement = conn.prepareStatement("DELETE FROM hashtags WHERE to_post_id=?"); //there might be a more efficient way to query this
-            statement.setInt(1, postID);
-            statement.executeUpdate();
-            statement = conn.prepareStatement("DELETE FROM uploads WHERE to_post_id=?");
-            statement.setInt(1, postID);
-            statement.executeUpdate();
-            statement = conn.prepareStatement("DELETE FROM posts WHERE id=?"); //there might be a more efficient way to query this
-            statement.setInt(1, postID);
-            statement.executeUpdate();
-
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    public void insertHashtags(String content, int post_id) {
-        List<String> tags = contentHashtagParsing(content);
-        if (tags.size() != 0) {
-            try {
-                Statement st = conn.createStatement();
-                String hashtagSQL = "INSERT INTO hashtags (tag, to_post_id) VALUES ";
-                for (String tag : tags) {
-                    hashtagSQL = hashtagSQL + String.format("('%s',%d), ", tag, post_id);
-                }
-                hashtagSQL = hashtagSQL.substring(0, hashtagSQL.length() - 2) + ";";//this is a hacky way of doing it, have to get rid of the last ", " in sql string there is probably a better way
-                st.executeUpdate(hashtagSQL);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
+    //TODO visibity check
     public ArrayList<UserPost> searchPost(String username, String hashtag, String fromDate, String toDate) {//will search as long as one field is valid
         ArrayList<UserPost> searchResults = new ArrayList<>();
 
@@ -471,6 +361,203 @@ public class DBManager {
 
         return searchResults;
     }
+
+    //TODO visibity check
+    public FileAttachment getFileAttachment(int fileId) {
+        FileAttachment fileAttachment = new FileAttachment();
+
+        try {
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM uploads WHERE id =?"); //there might be a more efficient way to query this
+            st.setInt(1, fileId);
+            ResultSet resultSet = st.executeQuery();
+
+            resultSet.next();
+
+            fileAttachment = new FileAttachment(resultSet.getInt("uploads.id"),
+                    resultSet.getString("filename"),
+                    resultSet.getString("description"),
+                    resultSet.getString("filesize"),
+                    resultSet.getString("filetype"),
+                    resultSet.getBlob("data"));
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return fileAttachment;
+
+
+    }
+
+    // TODO add visibility
+    public void postMessage(String title, String content, String username, Part filePart) {
+
+
+        UserPost userPost = new UserPost(title, content, username);
+        try {
+            Statement st = conn.createStatement();
+            String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES ('%s','%s',%s,'%s','%s');",
+                    userPost.getTitle(), userPost.getContent(), getUserID(userPost.getUsername()), formatDate(userPost.getCreate_timestamp()), formatDate(userPost.getModified_timestamp()));
+            // need to use executeUpdate for insertion and deletion
+            st.executeUpdate(postMessage, Statement.RETURN_GENERATED_KEYS);
+            ResultSet generatedKeys = st.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int post_id = generatedKeys.getInt(1);
+                postFile(filePart, post_id);
+                insertHashtags(content, post_id);//added for hashtag parsing
+            }
+        } catch (SQLException e) {
+        }
+    }
+
+    public boolean modifyPost(int postID, String title, String content) { //we need appropriate hashtags updating mechanism here as well
+        try {
+            PreparedStatement statement = conn.prepareStatement("UPDATE posts SET title = ?, content = ?, modified_timestamp =? WHERE id =?"); //there might be a more efficient way to query this
+            statement.setString(1, title);
+            statement.setString(2, content);
+            statement.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            statement.setInt(4, postID);
+            statement.executeUpdate();
+
+            statement = conn.prepareStatement("DELETE FROM hashtags WHERE to_post_id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+
+            insertHashtags(content, postID);
+
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deletePost(int postID) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM hashtags WHERE to_post_id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+            statement = conn.prepareStatement("DELETE FROM uploads WHERE to_post_id=?");
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+            statement = conn.prepareStatement("DELETE FROM posts WHERE id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, postID);
+            statement.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean postFile(Part filePart, int post_id) {
+        InputStream inputStream = null;
+        try {
+
+            inputStream = filePart.getInputStream();
+//            byte[] bytes = new byte[1024];
+//            for (int i = inputStream.read(); i!=-1; i= inputStream.read()){
+//                bytes[i] = (byte) inputStream.read();
+//
+//            }
+            String postFileSQL = "INSERT INTO uploads (description, data, filename, filesize, filetype, to_post_id) VALUES (?,?,?,?,?,?);";
+            PreparedStatement st = conn.prepareStatement(postFileSQL);
+            st.setString(1, filePart.getName());
+            st.setBlob(2, inputStream);
+            st.setString(3, filePart.getSubmittedFileName());
+            st.setLong(4, filePart.getSize());
+            st.setString(5, filePart.getContentType());
+            st.setInt(6, post_id);
+            st.executeUpdate();// need to use executeUpdate for insertion and deletion
+            return true;
+        } catch (IOException | SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean modifyFile(Part filePart, int fileID) {
+        try {
+            PreparedStatement st = conn.prepareStatement("UPDATE uploads SET description = ?, data = ?, filename = ?, filesize = ?, filetype = ?  WHERE id = ?");
+            st.setString(1, filePart.getName());
+            st.setString(2, String.valueOf(filePart.getInputStream()));
+            st.setString(3, filePart.getSubmittedFileName());
+            st.setString(4, String.valueOf(filePart.getSize()));
+            st.setString(5, filePart.getContentType());
+            st.setInt(6, fileID);
+            st.executeUpdate();// need to use executeUpdate for insertion and deletion
+            return true;
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteFile(int fileID) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM uploads WHERE id=?"); //there might be a more efficient way to query this
+            statement.setInt(1, fileID);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String formatDate(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(date);
+    }
+
+    public int getUserID(String userName) {
+        int userId = -1;
+        try {
+            Statement st = conn.createStatement();
+            String idQuerying = String.format("SELECT id FROM users WHERE username = '%s';", userName);
+            //System.out.println(idQuerying);
+            ResultSet resultSet = st.executeQuery(idQuerying);
+            resultSet.next(); //.next() because cursor starts before result row 1
+            userId = resultSet.getInt("id");
+        } catch (SQLException e) {
+        }
+        return userId;
+    }
+
+    // not used, but ill leave it here for the moment
+    public String getUserName(int userId) {
+        String username = "anonymous";
+        try {
+            Statement st = conn.createStatement();
+            String usernameSQL = String.format("SELECT * FROM users WHERE id= '%d';", userId);
+            System.out.println(usernameSQL);
+            ResultSet resultSet = st.executeQuery(usernameSQL);
+            resultSet.next(); //.next() because cursor starts before result row 1
+            username = resultSet.getString("username");
+        } catch (SQLException e) {
+        }
+
+        return username;
+    }
+
+    public void insertHashtags(String content, int post_id) {
+        List<String> tags = contentHashtagParsing(content);
+        if (tags.size() != 0) {
+            try {
+                Statement st = conn.createStatement();
+                String hashtagSQL = "INSERT INTO hashtags (tag, to_post_id) VALUES ";
+                for (String tag : tags) {
+                    hashtagSQL = hashtagSQL + String.format("('%s',%d), ", tag, post_id);
+                }
+                hashtagSQL = hashtagSQL.substring(0, hashtagSQL.length() - 2) + ";";//this is a hacky way of doing it, have to get rid of the last ", " in sql string there is probably a better way
+                st.executeUpdate(hashtagSQL);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     //we need to add a method there, one that returns the joint of user, hashtag and posts, then in accordance to which field is empty, we need to add AND to our sql statement
 

@@ -6,7 +6,8 @@
       "password": "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb",
       "firstname": "John",
       "lastname": "Smith",
-      "email": "a@a.com"
+      "email": "a@a.com",
+      "visibility": "admin"
     },
     {
       "user-id": 2,
@@ -14,7 +15,8 @@
       "password": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d",
       "firstname": "Mark",
       "lastname": "Cuban",
-      "email": "b@b.com"
+      "email": "b@b.com",
+      "visibility": "encs"
     }
   ]
 }
