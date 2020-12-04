@@ -16,19 +16,18 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("loggedInUser", true);
 
 //USER AUTH WITH SESSION
-//                    HttpSession session = req.getSession();
-//                    session.setAttribute("username", req.getParameter("username"));
+                    session.setAttribute("username", req.getParameter("username"));
 //                    req.setAttribute("username", req.getParameter("username"));
 //                    Populate with UserPosts
 //                    req.setAttribute("UserPosts", db.getUserPosts());
-//                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+//                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/home");
 //                    rd.forward(req,resp);
 
 
-            Cookie loginCookie = new Cookie("user", req.getParameter("username"));
-            loginCookie.setMaxAge(30 * 60);
-            loginCookie.setPath("/");
-            resp.addCookie(loginCookie);
+//            Cookie loginCookie = new Cookie("user", req.getParameter("username"));
+//            loginCookie.setMaxAge(30 * 60);
+//            loginCookie.setPath("/");
+//            resp.addCookie(loginCookie);
             resp.sendRedirect("/app/home");
 
 

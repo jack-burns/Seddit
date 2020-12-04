@@ -39,13 +39,13 @@
 <body>
 <div class="global-container">
     <%
-        String userName = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user")) userName = cookie.getValue();
-            }
-        }
+        String userName = (String) session.getAttribute("username");
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("user")) userName = cookie.getValue();
+//            }
+//        }
     %>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark bg-light">
         <img src="../style/seddit.png" width="40" height="40" alt="" loading="img">
@@ -65,7 +65,7 @@
                 </li>
             </ul>
             <span class="welcome-msg">Logged in as <%=userName%> </span>
-            <form class="form-inline mt-2 mt-md-0" action="logout" method="post">
+            <form class="form-inline mt-2 mt-md-0" action="/logout" method="post">
                 <input class="btn btn-outline-primary" type="submit" value="logout">
             </form>
         </div>
