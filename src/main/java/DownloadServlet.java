@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.Blob;
 
-@WebServlet(name = "DownloadServlet", urlPatterns = "/download")
+@WebServlet(name = "DownloadServlet", urlPatterns = "/app/download")
 public class DownloadServlet extends HttpServlet {
 
     @Override

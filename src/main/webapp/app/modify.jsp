@@ -1,12 +1,11 @@
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="dao.UserPost" %><%--
-  Created by IntelliJ IDEA.
-  User: melon
-  Date: 2020-11-05
-  Time: 3:38 p.m.
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="dao.FileAttachment" %>
+<%@ page import="dao.UserPost" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    UserPost userPost = (UserPost) request.getSession().getAttribute("UserPost");
+    FileAttachment fileAttachment = userPost.getFileAttachment();
+%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -15,14 +14,19 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style/style.css">
-    <title>Seddit</title>
+    <title>Modify content</title>
     <style>
+        .global-container{
+            height: 100%;
+            background-color: #f5f5f5;
+        }
         body{
             background-color: #f5f5f5;
         }
-        .global-container{
-            background-color: #f5f5f5;
-            height: 100%;
+
+        .welcome-msg{
+            color: white;
+            margin-right:20px;
         }
 
         .submit-form{
@@ -34,13 +38,8 @@
             -moz-box-shadow: 0 10px 6px -6px #777;
             box-shadow: 0 10px 6px -6px #777;
         }
-
-        .welcome-msg{
-            color: white;
-            margin-right:20px;
-        }
-
     </style>
+
 </head>
 <body>
 <div class="global-container">
@@ -53,9 +52,7 @@
             }
         }
 //    userName = (String) session.getAttribute("username");
-        if(userName == null){
-            response.sendRedirect("login");
-        } else {
+        if(userName == null) response.sendRedirect("login");
     %>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark bg-light">
         <img src="style/seddit.png" width="40" height="40" alt="" loading="img">
@@ -66,11 +63,11 @@
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                <li class="nav-item ">
+                    <a class="nav-link " href="/app/home">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/search.jsp">Search</a>
+                    <a class="nav-link" href="#">Search</a>
                 </li>
             </ul>
             <span class="welcome-msg">Logged in as <%=userName%> </span>
@@ -87,31 +84,35 @@
 
 
     </nav>
-
     <div class="container">
-        <form action="home" method="post"class="submit-form" enctype="multipart/form-data">
-            <h1>Create a new post</h1>
-            <label for="title"><h5>Title:</h5></label><br>
-            <input name="title" class="form-control" type="text" id="title"><br>
-            <label for="content"><h5>Enter your content:</h5></label><br>
-            <textarea name="content" id="content" class="form-control" rows="3"></textarea> <br><br>
-            <input type="file" class="btn btn-secondary" name="file" size="50"/>
+        <div class="submit-form">
+            <h1>Modify your post</h1>
+            <form action="modifyPost" method="POST">
+                <label for="title"><h5>Title:</h5></label>
+                <input type="text" id="title" class="form-control" name = "title" value="<%=userPost.getTitle()%>">
+                <br/>
+                <label for="content"><h5>Content:</h5></label>
+                <textarea id="content" class="form-control" name = "content" ><%=userPost.getContent()%></textarea>
+                <br/>
+                <input type="submit" class="btn btn-primary" name="modifyPost" value="Post Comment">
+                <input type = "submit" class="btn btn-primary" name = "deletePost" value = "Delete">
+            </form>
 
-            <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
-        </form>
+            <form action="modifyFile" method="POST" enctype="multipart/form-data">
+                File Attachment: <%=Objects.toString(fileAttachment.getName(), "No Attachment")%>
+                <input type="file" class="btn btn-secondary" name="file" size="50"/>
+                <input type = "submit" class="btn btn-secondary" name = "uploadFile" value = "Replace file">
+                <input type = "submit" class="btn btn-secondary" name = "deleteFile" value = "Delete">
+            </form>
+        </div>
+        <%--
+        -see if request is cumulative, if it is there is no need for hidden input here (okay, it would seem like the request is overwritten)
+        -send necessary info to update the correct post in DB, username, created time, title and content
+        --%>
     </div>
-
-
-
-    <div class="container">
-        <%@ include file="posts.jsp" %>
-
-    </div>
-    <%
-        }
-    %>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
 </body>
 </html>

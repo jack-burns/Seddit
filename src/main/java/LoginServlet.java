@@ -12,6 +12,8 @@ public class LoginServlet extends HttpServlet {
                 DBManager db = new DBManager();
                 db.getConnection();
                 if(db.validateLogin(req.getParameter("username"), req.getParameter("password"))){
+                    HttpSession session = req.getSession();
+                    session.setAttribute("loggedInUser", true);
 
 //USER AUTH WITH SESSION
 //                    HttpSession session = req.getSession();
@@ -27,7 +29,7 @@ public class LoginServlet extends HttpServlet {
                     loginCookie.setMaxAge(30*60);
                     loginCookie.setPath("/");
                     resp.addCookie(loginCookie);
-                    resp.sendRedirect("home");
+                    resp.sendRedirect("/app/home");
 
 
                 } else {

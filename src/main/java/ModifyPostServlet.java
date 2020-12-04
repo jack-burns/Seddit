@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name="ModifyPost", urlPatterns = "/modifyPost")
+@WebServlet(name="ModifyPost", urlPatterns = "/app/modifyPost")
 public class ModifyPostServlet extends ModifyServlet{
 
     @Override
@@ -34,7 +34,7 @@ public class ModifyPostServlet extends ModifyServlet{
             }
         }
 
-        resp.sendRedirect("home");
+        resp.sendRedirect("/app/home");
     }
 
     @Override

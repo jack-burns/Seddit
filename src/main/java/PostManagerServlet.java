@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet(name="PostManager", urlPatterns = "/home")
+@WebServlet(name="PostManager", urlPatterns = "/app/home")
 @javax.servlet.annotation.MultipartConfig
 public class PostManagerServlet extends HttpServlet {
 
@@ -39,7 +39,7 @@ public class PostManagerServlet extends HttpServlet {
         String title = req.getParameter("title");
         String content = req.getParameter("content");
         db.postMessage(title, content, username, filePart);
-        resp.sendRedirect("home");
+        resp.sendRedirect("/app/home");
 
 
     }
@@ -61,7 +61,7 @@ public class PostManagerServlet extends HttpServlet {
 
         //Populate with UserPosts
         req.setAttribute("UserPosts", db.getUserPosts(viewCount));
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/home.jsp");
         rd.forward(req,resp);
     }
 }

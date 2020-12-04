@@ -6,11 +6,11 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name="RedirectToSearchServlet", urlPatterns = "/search")
+@WebServlet(name="RedirectToSearchServlet", urlPatterns = "/app/search")
 public class SearchServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/search.jsp");
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/search.jsp");
         rd.forward(req,resp);
     }
 
@@ -26,7 +26,7 @@ public class SearchServlet extends HttpServlet{
         ArrayList<UserPost> searchResult = db.searchPost(username, hashtag, fromDate, toDate);
 
         req.setAttribute("UserPosts", searchResult);
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/search.jsp");
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/search.jsp");
         rd.forward(req,resp);
 
     }

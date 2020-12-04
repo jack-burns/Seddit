@@ -6,7 +6,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name="ModifyFile", urlPatterns = "/modifyFile")
+@WebServlet(name="ModifyFile", urlPatterns = "/app/modifyFile")
 @javax.servlet.annotation.MultipartConfig
 public class ModifyFileServlet extends ModifyServlet{
 
@@ -47,7 +47,7 @@ public class ModifyFileServlet extends ModifyServlet{
             }
 
         }
-        resp.sendRedirect("home");
+        resp.sendRedirect("/app/home");
     }
 
     @Override

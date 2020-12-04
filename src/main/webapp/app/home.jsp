@@ -1,13 +1,12 @@
-<%--
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="dao.UserPost" %><%--
   Created by IntelliJ IDEA.
-  User: ZiLi
-  Date: 2020-11-12
-  Time: 9:49 p.m.
+  User: melon
+  Date: 2020-11-05
+  Time: 3:38 p.m.
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@page import="java.util.ArrayList"%>      <%--Importing all the dependent classes--%>
-<%@page import="dao.UserPost"%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -16,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style/style.css">
-    <title> Search a Post</title>
+    <title>Seddit</title>
     <style>
         body{
             background-color: #f5f5f5;
@@ -28,7 +27,6 @@
 
         .submit-form{
             margin-top:100px;
-            margin-bottom: 50px;
             padding: 20px;
             border-radius: 10px;
             background-color: white;
@@ -42,22 +40,10 @@
             margin-right:20px;
         }
 
-        .post-class{
-            border: 1px solid orangered;
-            border-radius: 10px;
-            margin: 25px;
-            padding: 10px;
-            background-color: white;
-            -webkit-box-shadow: 0 10px 6px -6px #777;
-            -moz-box-shadow: 0 10px 6px -6px #777;
-            box-shadow: 0 10px 6px -6px #777;
-        }
-
     </style>
 </head>
 <body>
 <div class="global-container">
-
     <%
         String userName = null;
         Cookie[] cookies = request.getCookies();
@@ -66,6 +52,10 @@
                 if(cookie.getName().equals("user")) userName = cookie.getValue();
             }
         }
+//    userName = (String) session.getAttribute("username");
+        if(userName == null){
+            response.sendRedirect("login");
+        } else {
     %>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark bg-light">
         <img src="style/seddit.png" width="40" height="40" alt="" loading="img">
@@ -76,11 +66,11 @@
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/home.jsp">Home </a>
-                </li>
                 <li class="nav-item active">
-                    <a class="nav-link active" href="#">Search <span class="sr-only">(current)</span></a>
+                    <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/app/search">Search</a>
                 </li>
             </ul>
             <span class="welcome-msg">Logged in as <%=userName%> </span>
@@ -97,63 +87,31 @@
 
 
     </nav>
+
     <div class="container">
-        <div class="submit-form">
-            <h1>Find a post:</h1><br/>
-            <form action="search" method="post">
-                <label for="username"><h5>By Username:</h5></label>
-                <input type="text" class="form-control" name="username" id="username"><br/>
-                <label for="hashtag"><h5>By Hashtag(s):</h5></label>
-                <input type="text" class="form-control" name="hashtag" id="hashtag"><br/>
-                <label for="fromDate"><h5>By Date:</h5></label>
-                <input type="date" class="form-control" name="from" id="fromDate">
-                <input type="date" class="form-control" name="to" id="toDate"><br/>
-                <input type="submit" class="btn btn-primary" value = "Search">
-            </form>
-        </div>
-        <%
-            ArrayList userPosts = (ArrayList) request.getAttribute("UserPosts");
-            if(userPosts != null){
+        <form action="home" method="post"class="submit-form" enctype="multipart/form-data">
+            <h1>Create a new post</h1>
+            <label for="title"><h5>Title:</h5></label><br>
+            <input name="title" class="form-control" type="text" id="title"><br>
+            <label for="content"><h5>Enter your content:</h5></label><br>
+            <textarea name="content" id="content" class="form-control" rows="3"></textarea> <br><br>
+            <input type="file" class="btn btn-secondary" name="file" size="50"/>
 
-                for (Object post : userPosts) {
-                    UserPost userPost = (UserPost) post;
-        %>
-        <div class="post-class">
-
-            <h1> <%=userPost.getTitle()%></h1>
-            <p>Message: <%=userPost.getContent()%><p>
-            <p>User ID: <%=userPost.getUsername()%><p>
-            <p>Date created: <%=userPost.getCreate_timestamp()%><p>
-            <p>Date modified: <%=userPost.getModified_timestamp()%><p>
-                <%
-        if(userPost.getFileAttachment().getId()!=0){
-    %>
-            <form action="download" method="get">
-            <p>File Attachment: <%=userPost.getFileAttachment().getName()%></p>
-            <button type="submit" name="fileID" value="<%=userPost.getFileAttachment().getId()%>">Download</button>
-            </form>
-            <%
-                }
-                if(userName.equals(userPost.getUsername())){
-            %>
-            <form action="modify" method="GET">
-                <%--there must be a better way to do this, maybe handling it in the frontend? also a JSP declaration with content reference to userPost doesn't work here for some reason--%>
-                <input type = "hidden" name = "postID" value = '<%= userPost.getPostID()%>'>
-                <input type="submit" class="btn btn-secondary" value="Modify">
-            </form>
-            <%
-                }
-            %>
-        </div>
-        <%
-                }
-            }
-        %>
+            <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
+        </form>
     </div>
-</div>
+
+
+
+    <div class="container">
+        <%@ include file="posts.jsp" %>
+
+    </div>
+    <%
+        }
+    %>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
 </body>
 </html>
