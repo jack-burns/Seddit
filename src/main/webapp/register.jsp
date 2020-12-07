@@ -15,7 +15,7 @@
 <body>
 <h1>This is a beta version</h1>
 <h2>Register will be available soon</h2>
-<a href="home">Go back</a>
+<a href="login.jsp">Go back</a>
 
 
 </body>
