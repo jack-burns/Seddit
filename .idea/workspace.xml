@@ -34,11 +34,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3153d61c-b6cb-442c-bade-d44fc4d5a58f" name="Default Changelist" comment="Modify page styling added">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SearchServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SearchServlet.java" afterDir="false" />
-    </list>
+    <list default="true" id="3153d61c-b6cb-442c-bade-d44fc4d5a58f" name="Default Changelist" comment="Modify page styling added" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -100,7 +96,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="E:/comp 445/lab assignment 3/packet" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -214,6 +210,7 @@
       <workItem from="1604881654623" duration="47000" />
       <workItem from="1605216625786" duration="12277000" />
       <workItem from="1605370057339" duration="27857000" />
+      <workItem from="1606175981292" duration="70000" />
     </task>
     <task id="LOCAL-00001" summary="Added boostrap to project, styling for login page">
       <created>1605222634583</created>
@@ -307,9 +304,10 @@
       <screen x="2560" y="0" width="1440" height="2560" />
     </state>
     <state x="2951" y="33" width="729" height="1924" key="#xdebugger.XInspectDialog/0.600.2560.1413/4000.842.2560.1440/2560.0.1440.2560@0.600.2560.1413" timestamp="1604702517706" />
-    <state x="987" y="370" key="FileChooserDialogImpl" timestamp="1605235554787">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="617" y="227" key="FileChooserDialogImpl" timestamp="1606176013789">
+      <screen x="0" y="0" width="1600" height="860" />
     </state>
+    <state x="617" y="227" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1606176013789" />
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1280.1024/-1920.0.1920.1080@0.0.1920.1040" timestamp="1604879967005" />
     <state width="1740" height="506" key="GridCell.Tab.0.bottom" timestamp="1605658752334">
       <screen x="0" y="0" width="2560" height="1400" />
