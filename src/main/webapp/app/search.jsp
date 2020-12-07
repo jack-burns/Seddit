@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="java.util.ArrayList" %>      <%--Importing all the dependent classes--%>
 <%@page import="dao.UserPost" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -98,6 +99,13 @@
                 <label for="fromDate"><h5>By Date:</h5></label>
                 <input type="date" class="form-control" name="from" id="fromDate">
                 <input type="date" class="form-control" name="to" id="toDate"><br/>
+                <label for="group"><h5>Visibility:</h5></label>
+                <select name="group" id="group">
+                    <option value="Public">Public</option>
+                    <c:forEach items="${allVisibilities}" var="vis">
+                        <option value="${vis}">${vis}</option>
+                    </c:forEach>
+                </select><br><br>
                 <input type="submit" class="btn btn-primary" value="Search">
             </form>
         </div>
@@ -115,7 +123,8 @@
             <p>Message:<%=userPost.getContent()%><p>
             <p>User ID:<%=userPost.getUsername()%><p>
             <p>Date created:<%=userPost.getCreate_timestamp()%><p>
-            <p>Date modified:<%=userPost.getModified_timestamp()%>
+            <p>Date modified:<%=userPost.getModified_timestamp()%><p>
+            <p>Group:<%=userPost.getGroup()%></p>
             <p>
                     <%
         if(userPost.getFileAttachment().getId()!=0){

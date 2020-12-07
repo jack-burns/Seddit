@@ -35,7 +35,8 @@ public class PostManagerServlet extends HttpServlet {
         //sending message to DB with title, content, posterID, and current system time
         String title = req.getParameter("title");
         String content = req.getParameter("content");
-        db.postMessage(title, content, username, filePart);
+        String group = req.getParameter("group");
+        db.postMessage(title, content, username, filePart, group);
         resp.sendRedirect("/app/home");
 
 

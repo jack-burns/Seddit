@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -40,6 +41,7 @@
 <div class="global-container">
     <%
         String userName = (String) session.getAttribute("username");
+        String visibility = (String) session.getAttribute("visibility");
     %>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark bg-light">
         <img src="../style/seddit.png" width="40" height="40" alt="" loading="img">
@@ -73,7 +75,14 @@
             <label for="title"><h5>Title:</h5></label><br>
             <input name="title" class="form-control" type="text" id="title"><br>
             <label for="content"><h5>Enter your content:</h5></label><br>
-            <textarea name="content" id="content" class="form-control" rows="3"></textarea> <br><br>
+            <textarea name="content" id="content" class="form-control" rows="3"></textarea><br>
+            <label for="group"><h5>Visibility:</h5></label>
+            <select name="group" id="group">
+                <option value="Public">Public</option>
+                <c:forEach items="${allVisibilities}" var="vis">
+                    <option value="${vis}">${vis}</option>
+                </c:forEach>
+            </select><br><br>
             <input type="file" class="btn btn-secondary" name="file" size="50"/>
 
             <input type="submit" class="btn btn-primary" name="postmessage" value="Post"/>
