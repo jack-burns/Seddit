@@ -280,13 +280,13 @@ public class DBManager {
     }
 
     //TODO visibity check
-    public ArrayList<UserPost> searchPost(String username, String hashtag, String fromDate, String toDate) {//will search as long as one field is valid
+    public ArrayList<UserPost> searchPost(String username, String hashtag, String fromDate, String toDate, String group) {//will search as long as one field is valid
         ArrayList<UserPost> searchResults = new ArrayList<>();
 
         try {
             Statement searchQuery = conn.createStatement();
             //LEFT JOIN users, posts, hashtags and uploads tables together to accommodate for any combination of search between date range, username(singular) and hashtag(s)
-            String selectClause = "SELECT DISTINCT users.id, posts.id, title, content, username, create_timestamp, modified_timestamp, uploads.id, filename, description, filesize, filetype, data";
+            String selectClause = "SELECT DISTINCT users.id, posts.id, title, content, visibility, username, create_timestamp, modified_timestamp, uploads.id, filename, description, filesize, filetype, data";
             //it seems like any keys with repeated names from tables that are join together need to be in the select clause otherwise the java sql library will see it as syntax error although the workbench works fine
             String fromClause = "FROM (((users LEFT JOIN posts ON users.id = posts.from_user_id) LEFT JOIN hashtags ON posts.id = hashtags.to_post_id) LEFT JOIN uploads ON posts.id = uploads.to_post_id)";
             String whereClause = "WHERE ";
@@ -296,6 +296,7 @@ public class DBManager {
             String hashtagWhereClause = "";
             String fromDateWhereClause = "";
             String toDateWhereClause = "";
+            String groupWhereClause = "posts.visibility='"+group+"'";
 
             if (!username.isEmpty()) {
                 usernameWhereClause = "username = '" + username + "'";
@@ -320,7 +321,7 @@ public class DBManager {
                 toDateWhereClause = "modified_timestamp <= '" + toDate + "'";
             }
 
-            String[] searchTerms = {usernameWhereClause, hashtagWhereClause, fromDateWhereClause, toDateWhereClause};
+            String[] searchTerms = {usernameWhereClause, hashtagWhereClause, fromDateWhereClause, toDateWhereClause, groupWhereClause};
             boolean atLeastOneWhereTerm = false;
 
             for (String term : searchTerms) {
