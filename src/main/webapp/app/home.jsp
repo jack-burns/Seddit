@@ -79,9 +79,6 @@
             <label for="group"><h5>Visibility:</h5></label>
             <select name="group" id="group">
                 <option value="Public">Public</option>
-                <%
-                    ArrayList<String> allVis = (ArrayList<String>) request.getAttribute("allVisibilities");
-                %>
                 <c:forEach items="${allVisibilities}" var="vis">
                     <option value="${vis}">${vis}</option>
                 </c:forEach>

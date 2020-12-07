@@ -390,14 +390,14 @@ public class DBManager {
     }
 
     // TODO add visibility
-    public void postMessage(String title, String content, String username, Part filePart) {
+    public void postMessage(String title, String content, String username, Part filePart, String group) {
 
 
         UserPost userPost = new UserPost(title, content, username);
         try {
             Statement st = conn.createStatement();
-            String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp) VALUES ('%s','%s',%s,'%s','%s');",
-                    userPost.getTitle(), userPost.getContent(), getUserID(userPost.getUsername()), formatDate(userPost.getCreate_timestamp()), formatDate(userPost.getModified_timestamp()));
+            String postMessage = String.format("INSERT INTO posts (title, content, from_user_id, create_timestamp, modified_timestamp, visibility) VALUES ('%s','%s',%s,'%s','%s','%s');",
+                    userPost.getTitle(), userPost.getContent(), getUserID(userPost.getUsername()), formatDate(userPost.getCreate_timestamp()), formatDate(userPost.getModified_timestamp()), group);
             // need to use executeUpdate for insertion and deletion
             st.executeUpdate(postMessage, Statement.RETURN_GENERATED_KEYS);
             ResultSet generatedKeys = st.getGeneratedKeys();
