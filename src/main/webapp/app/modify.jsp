@@ -2,6 +2,7 @@
 <%@ page import="dao.UserPost" %>
 <%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%
     UserPost userPost = (UserPost) request.getSession().getAttribute("UserPost");
     FileAttachment fileAttachment = userPost.getFileAttachment();
@@ -94,6 +95,13 @@
                 <br/>
                 <label for="content"><h5>Content:</h5></label>
                 <textarea id="content" class="form-control" name="content"><%=userPost.getContent()%></textarea>
+                <label for="group"><h5>Visibility:</h5></label>
+                <select name="group" id="group">
+                    <option value="Public">Public</option>
+                    <c:forEach items="${allVisibilities}" var="vis">
+                        <option value="${vis}" ${vis == selectedGroup ? 'selected="selected"' : ''}>${vis}</option>
+                    </c:forEach>
+                </select>
                 <br/>
                 <input type="submit" class="btn btn-primary" name="modifyPost" value="Post Comment">
                 <input type="submit" class="btn btn-primary" name="deletePost" value="Delete">

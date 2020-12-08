@@ -18,8 +18,9 @@ public class ModifyPostServlet extends ModifyServlet {
 
             String newContent = req.getParameter("content");
             String newTitle = req.getParameter("title");
+            String newGroup = req.getParameter("group");
 
-            if (!db.modifyPost(postID, newTitle, newContent)) {
+            if (!db.modifyPost(postID, newTitle, newContent, newGroup)) {
                 PrintWriter writer = resp.getWriter();
                 writer.write("<H1>Update failed!</H1>");
                 writer.flush();

@@ -4,7 +4,6 @@ import com.google.common.base.Converter;
 import com.google.common.hash.Hashing;
 import dao.FileAttachment;
 import dao.UserPost;
-import org.checkerframework.checker.units.qual.A;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -62,8 +61,8 @@ public class DBManager {
         return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }
 
-    public String getUserVisibility(String username){
-        String vis = "";
+    public String getUserGroup(String username){
+        String group = "";
 
         try {
             // Parse JSON object
@@ -82,7 +81,7 @@ public class DBManager {
             for(int i = 0; i<array.size(); i++) {
                 JSONObject user = (JSONObject) array.get(i);
                 if(username.equals(user.get("username"))) {
-                    vis = (String) user.get("visibility");
+                    group = (String) user.get("visibility");
                 }
             }
 
@@ -90,12 +89,13 @@ public class DBManager {
             e.printStackTrace();
         }
 
-            return vis;
+            return group;
     }
 
-    public ArrayList<String> getAllVisibilities(String membership){
-        ArrayList<String> vis = new ArrayList<>();
-        vis.add(membership);
+    public ArrayList<String> getAllGroups(String membership){
+        ArrayList<String> group = new ArrayList<>();
+        ArrayList<String> group2 = new ArrayList<>();
+        group.add(membership);
 
         try {
             // Parse JSON object
@@ -111,21 +111,34 @@ public class DBManager {
             JSONObject jo = (JSONObject) obj;
             // get users
             JSONArray array = (JSONArray) jo.get("memberships");
-            for(int i = 0; i<array.size(); i++) {
-                JSONObject user = (JSONObject) array.get(i);
-                if(membership.equals(user.get("name"))) {
+            for (Object o : array) {
+                JSONObject user = (JSONObject) o;
+                if (membership.equals(user.get("name"))) {
                     JSONArray children = (JSONArray) user.get("children");
-                    for(Object child : children){
-                        vis.add((String) child);
+                    for (Object child : children) {
+                        group.add((String) child);
                     }
                 }
+                else if (group.contains(user.get("name"))) {
+                    // removes groups that are children to a group, but have no parent
+                    String parent = (String) user.get("parent");
+                    if(parent.isEmpty())
+                        group.remove(user.get("name"));
+                }
+            }
+
+            // remove undefined groups
+            for(Object o : array) {
+                JSONObject user = (JSONObject) o;
+                if(group.contains(user.get("name")))
+                    group2.add((String) user.get("name"));
             }
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return vis;
+        return group2;
 
     }
 
@@ -193,13 +206,13 @@ public class DBManager {
         return false;
     }
 
-    public String getVisibiltyCondition(ArrayList<String> visibilities){
+    public String getGroupCondition(ArrayList<String> groups){
         StringBuilder condition = new StringBuilder();
-        if(visibilities.size()>0){
+        if(groups.size()>0){
             condition.append(" WHERE");
-            for(int i = 0; i<visibilities.size();i++){
-                condition.append(" posts.visibility='").append(visibilities.get(i)).append("'");
-                if(i<visibilities.size()-1){
+            for(int i = 0; i<groups.size();i++){
+                condition.append(" posts.visibility='").append(groups.get(i)).append("'");
+                if(i<groups.size()-1){
                     condition.append(" OR");
                 }
             }
@@ -207,14 +220,14 @@ public class DBManager {
         return condition.toString();
     }
 
-    public ArrayList<UserPost> getUserPosts(int viewCount, String visibility) {
-        ArrayList<String> visibilities = getAllVisibilities(visibility);
+    public ArrayList<UserPost> getUserPosts(int viewCount, String group) {
+        ArrayList<String> visibilities = getAllGroups(group);
         ArrayList<UserPost> userPostArrayList = new ArrayList<>();
         try {
             Statement st = conn.createStatement();
 //            String getUserPostsSQL = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id ORDER BY posts.id DESC;";
             String selectClause = "SELECT * FROM posts INNER JOIN users ON posts.from_user_id=users.id LEFT OUTER JOIN uploads ON posts.id=uploads.to_post_id";
-            String whereClause = getVisibiltyCondition(visibilities) + " OR posts.visibility='Public'";
+            String whereClause = getGroupCondition(visibilities) + " OR posts.visibility='Public'";
             String orderClause = " ORDER BY posts.id DESC;";
             String getUserPostsWithAttachmentSQL = selectClause+whereClause+orderClause;
             ResultSet resultSet = st.executeQuery(getUserPostsWithAttachmentSQL);
@@ -248,7 +261,6 @@ public class DBManager {
         return userPostArrayList;
     }
 
-    //TODO visibity check
     public UserPost getUserPost(int postId) {
         UserPost userPost = new UserPost();
         try {
@@ -279,7 +291,6 @@ public class DBManager {
         return userPost;
     }
 
-    //TODO visibity check
     public ArrayList<UserPost> searchPost(String username, String hashtag, String fromDate, String toDate, String group) {//will search as long as one field is valid
         ArrayList<UserPost> searchResults = new ArrayList<>();
 
@@ -366,7 +377,6 @@ public class DBManager {
         return searchResults;
     }
 
-    //TODO visibity check
     public FileAttachment getFileAttachment(int fileId) {
         FileAttachment fileAttachment = new FileAttachment();
 
@@ -393,7 +403,22 @@ public class DBManager {
 
     }
 
-    public void postMessage(String title, String content, String username, Part filePart, String group) {
+    public boolean userPartOfGroup(String username, String groupToPostTo) {
+        // all groups available from that group
+        // get users group
+        String userGroup = getUserGroup(username);
+        // get all groups under it
+        ArrayList<String> userGroups = getAllGroups(userGroup);
+        // check if group user wants to post to is in users list of groups
+        return userGroups.contains(groupToPostTo);
+    }
+
+
+    public int postMessage(String title, String content, String username, Part filePart, String group) {
+
+        // check user is part of the group
+        if(!userPartOfGroup(username, group) && !group.equals("Public"))
+            return -1;
 
 
         UserPost userPost = new UserPost(title, content, username, group);
@@ -406,20 +431,25 @@ public class DBManager {
             ResultSet generatedKeys = st.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int post_id = generatedKeys.getInt(1);
-                postFile(filePart, post_id);
+                if(filePart != null)
+                    postFile(filePart, post_id);
                 insertHashtags(content, post_id);//added for hashtag parsing
+                return post_id;
             }
         } catch (SQLException e) {
         }
+        return -1;
     }
 
-    public boolean modifyPost(int postID, String title, String content) { //we need appropriate hashtags updating mechanism here as well
+    public boolean modifyPost(int postID, String title, String content, String group) { //we need appropriate hashtags updating mechanism here as well
+
         try {
-            PreparedStatement statement = conn.prepareStatement("UPDATE posts SET title = ?, content = ?, modified_timestamp =? WHERE id =?"); //there might be a more efficient way to query this
+            PreparedStatement statement = conn.prepareStatement("UPDATE posts SET title = ?, content = ?, modified_timestamp =? , visibility = ? WHERE id =?"); //there might be a more efficient way to query this
             statement.setString(1, title);
             statement.setString(2, content);
             statement.setDate(3, java.sql.Date.valueOf(java.time.LocalDate.now()));
-            statement.setInt(4, postID);
+            statement.setString(4, group);
+            statement.setInt(5, postID);
             statement.executeUpdate();
 
             statement = conn.prepareStatement("DELETE FROM hashtags WHERE to_post_id=?"); //there might be a more efficient way to query this

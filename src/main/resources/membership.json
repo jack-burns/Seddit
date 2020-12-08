@@ -7,7 +7,9 @@
         "concordia",
         "encs",
         "soen",
-        "comp"
+        "comp",
+        "bad",
+        "undefined"
       ]
     },
     {
@@ -38,6 +40,11 @@
     "parent": "encs",
     "children": [
     ]
+    },
+    {
+      "name": "bad",
+      "parent" : "",
+      "children": []
     }
   ]
 }

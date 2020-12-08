@@ -4,7 +4,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
@@ -19,8 +18,8 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("loggedInUser", true);
             session.setAttribute("username", userManager.getUsername());
-            session.setAttribute("visibility", userManager.getUserVisibility());
-            session.setAttribute("allVisibilities", userManager.getAllVisibilities());
+            session.setAttribute("visibility", userManager.getUserGroup());
+            session.setAttribute("allVisibilities", userManager.getAllGroups());
             resp.sendRedirect("/app/home");
 
         } else {
