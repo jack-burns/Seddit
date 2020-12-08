@@ -291,7 +291,7 @@ public class DBManager {
         return userPost;
     }
 
-    public ArrayList<UserPost> searchPost(String username, String hashtag, String fromDate, String toDate, String group) {//will search as long as one field is valid
+    public ArrayList<UserPost> searchPost(String username, String usernameToSearchFor, String hashtag, String fromDate, String toDate, String group) {//will search as long as one field is valid
         ArrayList<UserPost> searchResults = new ArrayList<>();
 
         try {
@@ -307,10 +307,20 @@ public class DBManager {
             String hashtagWhereClause = "";
             String fromDateWhereClause = "";
             String toDateWhereClause = "";
-            String groupWhereClause = "posts.visibility='"+group+"'";
+            String groupWhereClause = "";
 
-            if (!username.isEmpty()) {
-                usernameWhereClause = "username = '" + username + "'";
+            // check user is actually in group they want to see
+            if(!userPartOfGroup(username, group)) {
+                if(!group.equals("Public"))
+                    group = "";
+            }
+
+            if(!group.equals("")) {
+                groupWhereClause = "posts.visibility='" + group + "'";
+            }
+
+            if (!usernameToSearchFor.isEmpty()) {
+                usernameWhereClause = "username = '" + usernameToSearchFor + "'";
             }
 
             List<String> hashtags = new ArrayList<>();
@@ -437,6 +447,7 @@ public class DBManager {
                 return post_id;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return -1;
     }
