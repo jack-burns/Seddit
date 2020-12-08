@@ -19,7 +19,7 @@
     </c:if>
     Content: <c:out value="${sessionScope.UserPost.content}"/><br>
     Group <c:out value="${sessionScope.UserPost.group}"/> <br>
-    <c:if test="${sessionScope.UserPost.fileAttachment.name ne null}">
+    <c:if test="${sessionScope.UserPost.fileAttachment.name ne null && sessionScope.UserPost.fileAttachment.name ne ''}">
         Attachment name: <c:out value="${sessionScope.UserPost.fileAttachment.name}"/> <br>
         <form action="download" method="get">
             <button  type="submit" name="fileID"
