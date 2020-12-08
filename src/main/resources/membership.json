@@ -13,11 +13,6 @@
       ]
     },
     {
-      "name": "bad",
-      "parent" : "",
-      "children": []
-    },
-    {
       "name": "concordia",
       "parent": "admin",
       "children": [
@@ -45,6 +40,11 @@
     "parent": "encs",
     "children": [
     ]
+    },
+    {
+      "name": "bad",
+      "parent" : "",
+      "children": []
     }
   ]
 }

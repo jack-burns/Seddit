@@ -94,6 +94,7 @@ public class DBManager {
 
     public ArrayList<String> getAllGroups(String membership){
         ArrayList<String> group = new ArrayList<>();
+        ArrayList<String> group2 = new ArrayList<>();
         group.add(membership);
 
         try {
@@ -118,19 +119,26 @@ public class DBManager {
                         group.add((String) child);
                     }
                 }
-                else if (group.contains((String) user.get("name"))) {
+                else if (group.contains(user.get("name"))) {
                     // removes groups that are children to a group, but have no parent
                     String parent = (String) user.get("parent");
                     if(parent.isEmpty())
-                        group.remove((String) user.get("name"));
+                        group.remove(user.get("name"));
                 }
+            }
+
+            // remove undefined groups
+            for(Object o : array) {
+                JSONObject user = (JSONObject) o;
+                if(group.contains(user.get("name")))
+                    group2.add((String) user.get("name"));
             }
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return group;
+        return group2;
 
     }
 

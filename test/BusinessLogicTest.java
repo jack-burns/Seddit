@@ -79,6 +79,11 @@ public class BusinessLogicTest {
     // 1 - a group membership that has undefined group or user
     @Test
     public void undefinedGroup() {
+        ArrayList<String> groups = dbManager.getAllGroups("admin");
+        if(groups.contains("undefined"))
+            assertFalse(true);
+        else
+            assertTrue(true);
 
     }
 
