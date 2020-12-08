@@ -23,13 +23,13 @@ public class UserManager implements userManagerInterface {
     }
 
     @Override
-    public String getUserVisibility() {
-        membership = db.getUserVisibility(username);
+    public String getUserGroup() {
+        membership = db.getUserGroup(username);
         return membership;
     }
 
     @Override
-    public ArrayList<String> getAllVisibilities() {
-        return db.getAllVisibilities(membership);
+    public ArrayList<String> getAllGroups() {
+        return db.getAllGroups(membership);
     }
 }

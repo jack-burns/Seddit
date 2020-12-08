@@ -5,7 +5,7 @@ public interface userManagerInterface {
 
     public String getUsername();
 
-    public String getUserVisibility();
+    public String getUserGroup();
 
-    public ArrayList<String> getAllVisibilities();
+    public ArrayList<String> getAllGroups();
 }
