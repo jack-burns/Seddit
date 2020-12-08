@@ -1,6 +1,7 @@
 import java.io.*;
 
 public class UserManagerFactory extends Factory{
+    //for singleton pattern
     private static UserManagerFactory instance;
     final String classNamePath = "/ClassName.txt";
     String className;
