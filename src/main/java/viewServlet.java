@@ -31,6 +31,9 @@ public class viewServlet extends HttpServlet{
         //get FileAttachment
 //        req.setAttribute("FileAttachment", db.get);
 
+        //sets the bean but we're using the session
+        req.setAttribute("aPost", userPost);
+
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/templateView.jsp");
         rd.forward(req, resp);
     }
