@@ -7,8 +7,15 @@
         "concordia",
         "encs",
         "soen",
-        "comp"
+        "comp",
+        "bad",
+        "undefined"
       ]
+    },
+    {
+      "name": "bad",
+      "parent" : "",
+      "children": []
     },
     {
       "name": "concordia",

@@ -29,6 +29,7 @@ public class ModifyServlet extends HttpServlet {
         req.getSession().setAttribute("UserPost", userPost);
         req.getSession().setAttribute("postID", userPostID);
         req.getSession().setAttribute("fileID", fileID);
+        req.setAttribute("selectedGroup", userPost.getGroup());
 
         //send client to post modification page
 
