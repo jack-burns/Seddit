@@ -81,5 +81,7 @@ public class UserPost {
         return group;
     }
 
-    ;
+    public String toString(){
+        return "userID: " + this.userId + "username: " + this.username + "title: " + this.title + "content: " +  this.content + "group: " + this.group;
+    }
 }

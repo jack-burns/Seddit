@@ -2,6 +2,7 @@
 <%@ page import="dao.UserPost" %>
 <%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
     UserPost userPost = (UserPost) request.getSession().getAttribute("UserPost");
     FileAttachment fileAttachment = userPost.getFileAttachment();

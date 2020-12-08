@@ -60,6 +60,14 @@
             <p>Date modified:<%=userPost.getModified_timestamp()%><p>
             <p>Group:<%=userPost.getGroup()%></p>
             <p>
+            <form action="templateView" method="GET">
+                <%--there must be a better way to do this, maybe handling it in the frontend? also a JSP declaration with content reference to userPost doesn't work here for some reason--%>
+                <input type="hidden" name="postID" value='<%= userPost.getPostID()%>'>
+                <input type="submit" class="btn btn-secondary" value="Template View">
+            </form>
+
+
+
 <%
     try{
         if(!userPost.getFileAttachment().getName().equals("")){
