@@ -4,22 +4,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DBManager db = new DBManager();
-        db.getConnection();
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        if (db.validateLogin(username,password)){
+
+        UserManagerFactory factory = UserManagerFactory.getInstance();
+        userManagerInterface userManager = factory.createUserManager();
+        if (userManager.authenticateUser(username,password)){
             HttpSession session = req.getSession();
             session.setAttribute("loggedInUser", true);
-            session.setAttribute("username", req.getParameter("username"));
-            session.setAttribute("visibility", db.getUserVisibility(username));
-            session.setAttribute("allVisibilities", db.getAllVisibilities(db.getUserVisibility(username)));
+            session.setAttribute("username", userManager.getUsername());
+            session.setAttribute("visibility", userManager.getUserGroup());
+            session.setAttribute("allVisibilities", userManager.getAllGroups());
             resp.sendRedirect("/app/home");
 
         } else {
@@ -32,7 +32,6 @@ public class LoginServlet extends HttpServlet {
             }
             rd.include(req, resp);
         }
-
     }
 
     @Override

@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -26,8 +27,12 @@ public class SearchServlet extends HttpServlet {
         String group = req.getParameter("group");
         System.out.println("from date is: " + fromDate + "\n" + "to date is: " + toDate);
 
+        HttpSession session = req.getSession();
+
+
+
         DBManager db = new DBManager();
-        ArrayList<UserPost> searchResult = db.searchPost(username, hashtag, fromDate, toDate, group);
+        ArrayList<UserPost> searchResult = db.searchPost((String) session.getAttribute("username"), username, hashtag, fromDate, toDate, group);
 
         req.setAttribute("UserPosts", searchResult);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/app/search.jsp");

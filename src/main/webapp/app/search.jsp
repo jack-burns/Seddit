@@ -81,7 +81,7 @@
                 </li>
             </ul>
             <span class="welcome-msg">Logged in as <%=userName%> </span>
-            <form class="form-inline mt-2 mt-md-0" action="logout" method="post">
+            <form class="form-inline mt-2 mt-md-0" action="/logout" method="post">
                 <input class="btn btn-outline-primary" type="submit" value="logout">
             </form>
         </div>

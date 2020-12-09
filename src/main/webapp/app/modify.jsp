@@ -95,6 +95,13 @@
                 <br/>
                 <label for="content"><h5>Content:</h5></label>
                 <textarea id="content" class="form-control" name="content"><%=userPost.getContent()%></textarea>
+                <label for="group"><h5>Visibility:</h5></label>
+                <select name="group" id="group">
+                    <option value="Public">Public</option>
+                    <c:forEach items="${allVisibilities}" var="vis">
+                        <option value="${vis}" ${vis == selectedGroup ? 'selected="selected"' : ''}>${vis}</option>
+                    </c:forEach>
+                </select>
                 <br/>
                 <input type="submit" class="btn btn-primary" name="modifyPost" value="Post Comment">
                 <input type="submit" class="btn btn-primary" name="deletePost" value="Delete">
