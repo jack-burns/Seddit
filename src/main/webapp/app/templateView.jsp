@@ -27,6 +27,20 @@
             </button>
         </form>
     </c:if>
+    <br>
+    <form action="transformView" method="GET">
+        <button type="submit" name="toXML" value="${sessionScope.UserPost.postID}">to XML
+
+        </button>
+    </form>
+
+    <form action="download2" method="GET">
+        <button type="submit" name="downloadXML" value="${sessionScope.UserPost.postID}">Download XML
+
+        </button>
+    </form>
+
+
 
 </div>
 </body>
