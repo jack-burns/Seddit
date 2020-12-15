@@ -28,6 +28,12 @@
         </form>
     </c:if>
 
+    <form action="transformView" method="GET">
+        <button type="submit" name="toXML" value="${sessionScope.UserPost.postID}">to XML
+
+        </button>
+    </form>
+
 </div>
 </body>
 </html>
